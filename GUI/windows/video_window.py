@@ -3,13 +3,12 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 
 
 class VideoWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, video_id):
         super().__init__()
 
         self.setWindowTitle('YouTube Video Player')
         self.setGeometry(100, 100, 800, 600)
 
-        video_id = "eRQklf9vxBQ"
         video_url = (f"https://www.youtube.com/embed/{video_id}?autoplay=1&controls=1&"
                      f"modestbranding=1&showinfo=0&fs=0&rel=0&color=white")
 
