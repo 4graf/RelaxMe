@@ -10,14 +10,16 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QApplication, QFileDialog
 from PySide6.QtWidgets import QMainWindow, QWidget
+
+from GUI.windows.themes import ThemeGUI
+from GUI.windows.ui_main_window import Ui_MainWindow
+from GUI.windows.ui_startup_window import Ui_StartupWindow
+
 # from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg as FigureCanvas,
 #                                                NavigationToolbar2QT as NavigationToolbar)
 
 # from classification import EEGClassifier
-from ui_main_window import Ui_MainWindow
 # from preprocessing import EEGPreprocessing
-from themes import ThemeGUI
-from ui_startup_window import Ui_StartupWindow
 
 
 # matplotlib.use('Qt5Agg')
