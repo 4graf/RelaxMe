@@ -16,7 +16,7 @@
 #
 # # Остановка сбора данных
 # board.stop_streaming()
-
+import time
 
 from brainflow.board_shim import BoardShim, BrainFlowInputParams, BoardIds
 
@@ -31,11 +31,18 @@ board.prepare_session()
 # Начало сбора данных
 board.start_stream()
 
+data = []
+start_time = time.time()
+print(start_time)
 # Получение данных в режиме онлайн
-while True:
-    data = board.get_current_board_data(256)  # Получение 256 отсчетов данных
+while time.time() - start_time < 1:
+    record = board.get_current_board_data(256)  # Получение 256 отсчетов данных
     # Обработка данных здесь
-    print(data)
+    data.append(record)
+print(time.time())
+print(data[-1].shape)
+with open(r"C:\Users\Арсений\Desktop\records.txt", mode='w') as f:
+    f.write(str(data[-1].tolist()))
 
 # Завершение сеанса сбора данных
 board.stop_stream()
