@@ -53,7 +53,9 @@ async def record_eeg():
         await asyncio.sleep(5)
         # while (time.time() - start_time) < 5:
         data = board.get_current_board_data(250 * 5)
-        eeg_data = data[eeg_channels, :]
+        data = board.get_board_data()
+        # eeg_data = data[eeg_channels, :]
+        eeg_data = data[0, :]
         eeg_data_queue.append(eeg_data)
         print('Конец записи ЭЭГ')
 
@@ -77,7 +79,9 @@ async def send_eeg():
             for data in data_to_send:
                 # print(data.shape)
                 # f.write(str(data[-1].tolist()))
-                f.write(str(data))
+                # f.write(str(data.shape))
+                # f.write(str(data.tolist()))
+                f.write(str(data.size))
         print("Data sent to API")
 
 
@@ -92,7 +96,8 @@ if __name__ == "__main__":
     try:
         params = BrainFlowInputParams()
         params.serial_port = 'COM3'
-        board = BoardShim(BoardIds.CYTON_BOARD, params)
+        # board = BoardShim(BoardIds.CYTON_BOARD, params)
+        board = BoardShim(BoardIds.SYNTHETIC_BOARD, params)
         board.prepare_session()
 
         sampling_rate = board.get_sampling_rate(BoardIds.CYTON_BOARD)
