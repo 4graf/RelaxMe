@@ -1,31 +1,48 @@
 import mne
 import numpy as np
+import torch
 from numpy import ndarray
 from scipy.stats import skew, kurtosis
 
-from StressRecognizer.constants import DefaultSettings
+from StressRecognizer.constants import DataMode
 from StressRecognizer.interfaces.services.abstract_recognizer_service import AbstractRecognizerService
+from StressRecognizer.neural_network.stress_recognition_nn import StressRecognitionNN
+from StressRecognizer.settings import NNSettings, EEGSettings
+
+nn_settings = NNSettings()
+eeg_settins = EEGSettings()
 
 
 class RecognizerService(AbstractRecognizerService):
 
-    async def extract_features(self, data: ndarray):
+    def __init__(self):
+        self.nn = StressRecognitionNN(nn_settings.nn_features_count)
+        self.nn.load_state_dict(torch.load(nn_settings.nn_weights_path))
+
+    async def extract_features(self, data: ndarray, data_mode: DataMode):
         feat_data = self._bci_data_to_mne(data)
-        feat_data = self._filter_eeg(feat_data)
+
+        if data_mode == DataMode.RAW:
+            feat_data = self._filter_eeg(feat_data)
+
         feat_data = self._extract_features(feat_data)
 
         return feat_data
 
-    async def predict_stress(self, data: ndarray):
-        ...
+    async def predict_stress(self, data: ndarray, data_mode: DataMode):
+        features = await self.extract_features(data, data_mode)
+        logits = self.nn(features)
+        predict = logits.detach().cpu().argmax(dim=1)
 
-    def _bci_data_to_mne(data, ch_names=DefaultSettings.eeg_channel_names, sfreq=DefaultSettings.sfreq):
+        return predict
+
+    def _bci_data_to_mne(data, ch_names=eeg_settins.eeg_channel_names, sfreq=eeg_settins.sfreq):
         info = mne.create_info(ch_names=ch_names, sfreq=sfreq, ch_types=['eeg'] * len(ch_names), verbose=False)
         eeg = mne.io.RawArray(data=data, info=info, verbose=False)
         eeg = eeg.set_eeg_reference(verbose=False)
         return eeg
 
-    def _filter_eeg(data, low_cutoff=DefaultSettings.low_cutoff, high_cutoff=DefaultSettings.high_cutoff):
+    def _filter_eeg(data, low_cutoff=eeg_settins.low_cutoff, high_cutoff=eeg_settins.high_cutoff):
         data_filt = data.copy()
 
         data_notched = mne.filter.notch_filter(
@@ -39,7 +56,7 @@ class RecognizerService(AbstractRecognizerService):
         data_filt.filter(l_freq=low_cutoff, h_freq=high_cutoff, method='iir', verbose=False)
         return data_filt
 
-    def _extract_features(data, epoch_duration=DefaultSettings.epoch_duration):
+    def _extract_features(data, epoch_duration=eeg_settins.epoch_duration):
         eeg_epochs = mne.make_fixed_length_epochs(data, epoch_duration, verbose=False)
 
         psd_alpha = eeg_epochs.compute_psd(fmin=8, fmax=13, verbose=False)
