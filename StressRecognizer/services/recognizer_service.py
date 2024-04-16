@@ -36,12 +36,14 @@ class RecognizerService(AbstractRecognizerService):
 
         return predict
 
+    @staticmethod
     def _bci_data_to_mne(data, ch_names=eeg_settins.eeg_channel_names, sfreq=eeg_settins.sfreq):
         info = mne.create_info(ch_names=ch_names, sfreq=sfreq, ch_types=['eeg'] * len(ch_names), verbose=False)
         eeg = mne.io.RawArray(data=data, info=info, verbose=False)
         eeg = eeg.set_eeg_reference(verbose=False)
         return eeg
 
+    @staticmethod
     def _filter_eeg(data, low_cutoff=eeg_settins.low_cutoff, high_cutoff=eeg_settins.high_cutoff):
         data_filt = data.copy()
 
@@ -56,6 +58,7 @@ class RecognizerService(AbstractRecognizerService):
         data_filt.filter(l_freq=low_cutoff, h_freq=high_cutoff, method='iir', verbose=False)
         return data_filt
 
+    @staticmethod
     def _extract_features(data, epoch_duration=eeg_settins.epoch_duration):
         eeg_epochs = mne.make_fixed_length_epochs(data, epoch_duration, verbose=False)
 
