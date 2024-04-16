@@ -4,7 +4,7 @@ import torch
 from numpy import ndarray
 from scipy.stats import skew, kurtosis
 
-from stress_recognizer.constants import DataMode
+from stress_recognizer.util.constants import DataMode
 from stress_recognizer.interfaces.services.abstract_recognizer_service import AbstractRecognizerService
 from stress_recognizer.neural_network.stress_recognition_nn import StressRecognitionNN
 from stress_recognizer.settings import NNSettings, EEGSettings
