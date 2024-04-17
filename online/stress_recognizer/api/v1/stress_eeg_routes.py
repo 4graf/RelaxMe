@@ -1,16 +1,16 @@
 """
 Модуль предоставляет API-маршруты для управления поставщиками.
 """
-from typing import Any, Annotated
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from starlette import status
 
-from stress_recognizer.api.dependencies import get_recognizer_stress_service
-from stress_recognizer.schemas.eeg.prediction import Prediction
-from stress_recognizer.schemas.eeg.raw_eeg import RawEEG
-from stress_recognizer.services.recognizer_service import RecognizerService
-from stress_recognizer.util.constants import DataMode
+from online.stress_recognizer.api.dependencies import get_recognizer_stress_service
+from online.stress_recognizer.schemas.eeg.prediction import Prediction
+from online.stress_recognizer.schemas.eeg.raw_eeg import RawEEG
+from online.stress_recognizer.services.recognizer_service import RecognizerService
+from online.stress_recognizer.util.constants import DataMode
 
 router = APIRouter()
 

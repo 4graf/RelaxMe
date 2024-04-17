@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from stress_recognizer.api.v1 import stress_eeg_routes
+from online.stress_recognizer.api.v1 import stress_eeg_routes
 
 api_v1_router = APIRouter(prefix="/v1")
 

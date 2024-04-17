@@ -7,17 +7,17 @@ import sys
 from PySide6.QtWidgets import QApplication, QFileDialog
 from PySide6.QtWidgets import QMainWindow, QWidget
 
-from GUI.windows.relax_window import RelaxWindow
+from offline.GUI.windows.relax_window import RelaxWindow
 from settings import stress_video_id, survey_url
 # from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg as FigureCanvas,
 #                                                NavigationToolbar2QT as NavigationToolbar)
 
 # from classification import EEGClassifier
 # from preprocessing import EEGPreprocessing
-from GUI.windows.themes import ThemeGUI
-from GUI.windows.ui_startup_window import Ui_StartupWindow
-from GUI.windows.survey_window import SurveyWindow
-from GUI.windows.video_window import VideoWindow
+from offline.GUI.windows.themes import ThemeGUI
+from offline.GUI.windows.ui_startup_window import Ui_StartupWindow
+from offline.GUI.windows.survey_window import SurveyWindow
+from offline.GUI.windows.video_window import VideoWindow
 
 
 # matplotlib.use('Qt5Agg')

@@ -3,7 +3,7 @@ import asyncio
 import uvicorn
 from fastapi import FastAPI
 
-from stress_recognizer.api.api import api_routers
+from online.stress_recognizer.api.api import api_routers
 
 app = FastAPI()
 
