@@ -192,8 +192,9 @@ async def send_features():
             # print(type(json.dumps(data_to_send.tolist())))
             client = Client(base_url='http://localhost:8080/api/v1/stress_eeg')
             # predict = client.post('/predict', json=json.dumps(data_to_send.tolist()))
-            predict = client.post('/predict', json=json.dumps({'data': data_to_send.tolist()}))
-            f.write(str(predict))
+            # predict = client.post('/predict', json=json.dumps({'data': data_to_send.tolist()}))
+            predict = client.post('/predict', json={'data': data_to_send.tolist()})
+            f.write(str(predict.json()))
                 # print(nn(torch.Tensor(data)))
 
 

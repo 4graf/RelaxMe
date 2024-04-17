@@ -23,7 +23,6 @@ async def predict_stress(data_eeg: RawEEG,
     Предсказывает стресс по данным ЭЭГ
 
         :param data_eeg: Данные ЭЭГ.
-        :param data_mode: Режим полученных данных (сырые или отфильтрованные).
         :param recognizer_service: Сервис для распознавания стресса по ЭЭГ.
         :return: Список с предсказаниями.
     """

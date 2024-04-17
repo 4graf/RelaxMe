@@ -34,7 +34,8 @@ class RecognizerService(AbstractRecognizerService):
 
     async def predict_stress(self, eeg: RawEEG | FilterEEG, data_mode: DataMode):
         features = await self.extract_features(eeg.data, data_mode)
-        logits = self.nn(features)
+        features_tensor = torch.Tensor(features)
+        logits = self.nn(features_tensor)
         labels = logits.detach().cpu().argmax(dim=1)
 
         predictions = [Prediction(label=label) for label in labels]
