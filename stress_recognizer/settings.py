@@ -1,18 +1,17 @@
-import os
 from dotenv import load_dotenv
-
+from pydantic_settings import BaseSettings
 
 load_dotenv()
 
 
-class NNSettings:
-    nn_weights_path = os.getenv('NN_WEIGHTS_PATH')
-    nn_features_count = os.getenv('NN_FEATURES_COUNT')
+class NNSettings(BaseSettings):
+    nn_weights_path: str
+    nn_features_count: int
 
 
-class EEGSettings:
-    sfreq = os.getenv('SFREQ')
-    eeg_channel_names = os.getenv('EEG_CHANNEL_NAMES')
-    low_cutoff = os.getenv('LOW_CUTOFF')
-    high_cutoff = os.getenv('HIGH_CUTOFF')
-    epoch_duration = os.getenv('EPOCH_DURATION')
+class EEGSettings(BaseSettings):
+    sfreq: int
+    eeg_channel_names: tuple
+    low_cutoff: int
+    high_cutoff: int
+    epoch_duration: int

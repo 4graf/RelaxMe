@@ -4,6 +4,9 @@ import torch
 from numpy import ndarray
 from scipy.stats import skew, kurtosis
 
+from stress_recognizer.schemas.eeg.filter_eeg import FilterEEG
+from stress_recognizer.schemas.eeg.prediction import Prediction
+from stress_recognizer.schemas.eeg.raw_eeg import RawEEG
 from stress_recognizer.util.constants import DataMode
 from stress_recognizer.interfaces.services.abstract_recognizer_service import AbstractRecognizerService
 from stress_recognizer.neural_network.stress_recognition_nn import StressRecognitionNN
@@ -29,12 +32,14 @@ class RecognizerService(AbstractRecognizerService):
 
         return feat_data
 
-    async def predict_stress(self, data: ndarray, data_mode: DataMode):
-        features = await self.extract_features(data, data_mode)
+    async def predict_stress(self, eeg: RawEEG | FilterEEG, data_mode: DataMode):
+        features = await self.extract_features(eeg.data, data_mode)
         logits = self.nn(features)
-        predict = logits.detach().cpu().argmax(dim=1)
+        labels = logits.detach().cpu().argmax(dim=1)
 
-        return predict
+        predictions = [Prediction(label=label) for label in labels]
+
+        return predictions
 
     @staticmethod
     def _bci_data_to_mne(data, ch_names=eeg_settins.eeg_channel_names, sfreq=eeg_settins.sfreq):

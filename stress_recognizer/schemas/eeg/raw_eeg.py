@@ -1,5 +1,5 @@
-from numpy import ndarray
+from pydantic import BaseModel
 
 
-class RawEEG:
-    data: ndarray
+class RawEEG(BaseModel):
+    data: list

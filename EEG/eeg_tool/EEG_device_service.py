@@ -1,7 +1,9 @@
+import json
 import time
 
 import pandas as pd
 import torch
+from httpx import Client
 from scipy.stats import skew, kurtosis
 from torch import nn
 from torch.utils.data import DataLoader, Dataset, random_split
@@ -68,8 +70,8 @@ class StressRecognitionNetwork(nn.Module):
 
 
 eeg_data_queue = None
-nn = StressRecognitionNetwork(352)
-nn.load_state_dict(torch.load(r'C:\Проекты прогерские\Проекты PyCharm\MyRelax\best-model-parameters.pt'))
+# nn = StressRecognitionNetwork(352)
+# nn.load_state_dict(torch.load(r'C:\Проекты прогерские\Проекты PyCharm\MyRelax\best-model-parameters.pt'))
 
 
 async def record_eeg():
@@ -181,17 +183,18 @@ async def send_features():
             continue
         data_to_send = np.array(eeg_data_queue)
         eeg_data_queue = None  # Очищаем очередь
-        data_to_send = bci_data_to_mne(data_to_send, ch_names=channel_names)
-        print('1 ok')
-        data_to_send = filter_eeg(data_to_send)
-        print('2 ok')
-        data_to_send = extract_features(data_to_send)
-        print('3 ok')
+        # data_to_send = bci_data_to_mne(data_to_send, ch_names=channel_names)
+        # data_to_send = filter_eeg(data_to_send)
+        # data_to_send = extract_features(data_to_send)
         with (open(r"C:\Перенос\Доки\Мага брат\Методология научных исследований\ВКР\Онлайн записи\data.txt", mode='a')
               as f):
-            for data in data_to_send:
-                f.write(str(data.shape))
-                print(nn(torch.Tensor(data)))
+            # for data in data_to_send:
+            # print(type(json.dumps(data_to_send.tolist())))
+            client = Client(base_url='http://localhost:8080/api/v1/stress_eeg')
+            # predict = client.post('/predict', json=json.dumps(data_to_send.tolist()))
+            predict = client.post('/predict', json=json.dumps({'data': data_to_send.tolist()}))
+            f.write(str(predict))
+                # print(nn(torch.Tensor(data)))
 
 
 async def main():
