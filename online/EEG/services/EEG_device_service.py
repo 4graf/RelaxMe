@@ -1,11 +1,11 @@
 from brainflow import BrainFlowInputParams, BoardShim, BoardIds
 
 
-class EEGDevice:
+class EEGDeviceService:
 
-    def __init__(self, board_ids=BoardIds.CYTON_BOARD):
+    def __init__(self, board_ids=BoardIds.CYTON_BOARD, serial_port='COM3'):
         params = BrainFlowInputParams()
-        params.serial_port = 'COM3'
+        params.serial_port = serial_port
 
         self.board = BoardShim(BoardIds.SYNTHETIC_BOARD, params)
         # self.board = BoardShim(board_ids, params)
@@ -15,8 +15,14 @@ class EEGDevice:
         self.channel_names = self.board.get_eeg_names(board_ids)
         self.eeg_channels = BoardShim.get_eeg_channels(board_ids.value)
 
-    def get_data(self, **kwargs):
-        return self.board.get_board_data(**kwargs)
+    def get_data(self, only_eeg=False, **kwargs):
+        data = self.board.get_board_data(**kwargs)
+        if only_eeg:
+            data = data[self.eeg_channels, :]
+        return data
+
+    def get_data_async(self, **kwargs):
+        ...
 
     def start(self):
         self.board.start_stream()

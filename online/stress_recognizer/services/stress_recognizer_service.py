@@ -16,7 +16,7 @@ nn_settings = NNSettings()
 eeg_settins = EEGSettings()
 
 
-class RecognizerService(AbstractRecognizerService):
+class StressRecognizerService(AbstractRecognizerService):
 
     def __init__(self):
         self.nn = StressRecognitionNN(nn_settings.nn_features_count)
