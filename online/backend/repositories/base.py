@@ -1,12 +1,25 @@
 from abc import ABC
 
-from httpx import Client
+from httpx import AsyncClient, Response
 
 
 class BaseRestApiRepository(ABC):
-    def __init__(self, client: Client):
+    base_endpoint: str
+
+    def __init__(self, client: AsyncClient):
+        client.base_url = self.base_endpoint
         self.client = client
 
+    async def get(self, url) -> Response:
+        return await self.client.post(url)
+
+    async def post(self, url, payload) -> Response:
+        return await self.client.post(url, json=payload)
 
 
-# client = Client(base_url='http://localhost:8080/api/v1/stress_eeg')
+async def get_async_client():
+    async with AsyncClient() as client:  # ToDo: Подумать над необходимостью такой конструкции именно тут
+        try:
+            yield client
+        finally:
+            await client.aclose()
