@@ -1,7 +1,5 @@
 from abc import ABC
 
-from numpy import ndarray
-
 from online.backend.schemas.eeg_data import EEGData
 
 

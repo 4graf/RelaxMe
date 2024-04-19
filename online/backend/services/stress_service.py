@@ -4,6 +4,7 @@ from online.backend.interfaces.repositories.abstract_stress_repository import Ab
 from online.backend.interfaces.services.abstract_stress_service import AbstractStressService
 from online.backend.repositories.rest_api.stress_repository import StressRepository
 from online.backend.schemas.eeg_data import EEGData
+from online.backend.schemas.stress_prediction import StressPrediction
 
 
 class StressService(AbstractStressService):
@@ -18,7 +19,7 @@ class StressService(AbstractStressService):
 
         self.stress_repo = stress_repo
 
-    async def predict_stress(self, eeg: EEGData):
+    async def predict_stress(self, eeg: EEGData) -> StressPrediction:
         predictions = await self.stress_repo.predict_stress(eeg)
 
         return predictions

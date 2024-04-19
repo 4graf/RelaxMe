@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Any
 
 from httpx import AsyncClient, Response
 
@@ -10,10 +11,10 @@ class BaseRestApiRepository(ABC):
         client.base_url = self.base_endpoint
         self.client = client
 
-    async def get(self, url) -> Response:
+    async def get(self, url: str) -> Response:
         return await self.client.post(url)
 
-    async def post(self, url, payload) -> Response:
+    async def post(self, url: str, payload: Any) -> Response:
         return await self.client.post(url, json=payload)
 
 

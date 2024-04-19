@@ -8,19 +8,16 @@ from starlette import status
 
 from online.backend.api.dependencies import get_stress_service
 from online.backend.interfaces.services.abstract_stress_service import AbstractStressService
-from online.stress_recognizer.api.dependencies import get_recognizer_stress_service
-from online.stress_recognizer.schemas.eeg.prediction import Prediction
-from online.stress_recognizer.schemas.eeg.raw_eeg import RawEEG
-from online.stress_recognizer.services.stress_recognizer_service import StressRecognizerService
-from online.stress_recognizer.util.constants import DataMode
+from online.backend.schemas.eeg_data import EEGData
+from online.backend.schemas.stress_prediction import StressPrediction
 
 router = APIRouter()
 
 
 @router.post("/predict", status_code=status.HTTP_200_OK)
-async def predict_stress(data_eeg: RawEEG,
+async def predict_stress(data_eeg: EEGData,
                          stress_service: Annotated[AbstractStressService, Depends(get_stress_service)]) \
-        -> list[Prediction]:
+        -> StressPrediction:
     """
     Предсказывает стресс по данным ЭЭГ
 
