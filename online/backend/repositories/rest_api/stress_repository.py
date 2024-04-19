@@ -5,7 +5,6 @@ from online.backend.repositories.base import BaseRestApiRepository
 from online.backend.schemas.eeg_data import EEGData
 from online.backend.schemas.stress_prediction import StressPrediction
 from online.backend.settings import EndpointSettings
-from online.stress_recognizer.schemas.eeg.prediction import Prediction
 
 endpoint_settings = EndpointSettings()
 
