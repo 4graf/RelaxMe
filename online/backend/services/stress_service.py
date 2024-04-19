@@ -1,10 +1,13 @@
 from numpy import ndarray
 
+from online.backend.interfaces.repositories.abstract_stress_repository import AbstractStressRepository
 from online.backend.interfaces.services.abstract_stress_service import AbstractStressService
 from online.backend.repositories.rest_api.stress_repository import StressRepository
+from online.backend.schemas.eeg_data import EEGData
 
 
 class StressService(AbstractStressService):
+    stress_repo: AbstractStressRepository
 
     def __init__(self, stress_repo: StressRepository):
         """
@@ -15,7 +18,7 @@ class StressService(AbstractStressService):
 
         self.stress_repo = stress_repo
 
-    async def predict_stress(self, data: ndarray):
-        predictions = await self.stress_repo.predict_stress(data)
+    async def predict_stress(self, eeg: EEGData):
+        predictions = await self.stress_repo.predict_stress(eeg)
 
         return predictions
