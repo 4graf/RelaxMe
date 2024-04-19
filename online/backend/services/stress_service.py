@@ -20,6 +20,6 @@ class StressService(AbstractStressService):
         self.stress_repo = stress_repo
 
     async def predict_stress(self, eeg: EEGData) -> StressPrediction:
-        predictions = await self.stress_repo.predict_stress(eeg)
+        prediction = await self.stress_repo.predict_stress(eeg)
 
-        return predictions
+        return prediction

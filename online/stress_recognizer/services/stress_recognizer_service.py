@@ -32,16 +32,16 @@ class StressRecognizerService(AbstractRecognizerService):
 
         return feat_data
 
-    async def predict_stress(self, eeg: RawEEG | FilterEEG, data_mode: DataMode):
+    async def predict_stress(self, eeg: RawEEG | FilterEEG, data_mode: DataMode) -> Prediction:
         features = await self.extract_features(eeg.data, data_mode)
         features_tensor = torch.Tensor(features)
         logits = self.nn(features_tensor)
         labels = logits.detach().cpu().argmax(dim=1)
 
         # predictions = [Prediction(label=label) for label in labels]
-        predictions = Prediction(labels=labels)
+        prediction = Prediction(labels=labels)
 
-        return predictions
+        return prediction
 
     @staticmethod
     def _bci_data_to_mne(data, ch_names=eeg_settins.eeg_channel_names, sfreq=eeg_settins.sfreq):

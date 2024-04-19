@@ -12,7 +12,7 @@ for api_router in api_routers:
 
 
 async def main():
-    uvicorn.run(app="main:app", host='localhost', port=8080, reload=True)
+    uvicorn.run(app="main:app", host='localhost', port=3010, reload=True)
 
 
 if __name__ == "__main__":

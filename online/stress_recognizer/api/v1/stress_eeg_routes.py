@@ -18,7 +18,7 @@ router = APIRouter()
 @router.post("/predict", status_code=status.HTTP_200_OK)
 async def predict_stress(data_eeg: RawEEG,
                          recognizer_service: Annotated[StressRecognizerService, Depends(get_recognizer_stress_service)]) \
-        -> list[Prediction]:
+        -> Prediction:
     """
     Предсказывает стресс по данным ЭЭГ
 

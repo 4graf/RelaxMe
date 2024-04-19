@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class StressPrediction(BaseModel):
+class PredictionRest(BaseModel):
     labels: list[int]

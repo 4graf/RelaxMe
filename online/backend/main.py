@@ -1,19 +1,20 @@
 import asyncio
 
-from online.client.EEG.services.EEG_device_service import EEGDeviceService
-from online.stress_recognizer.services.stress_recognizer_service import StressRecognizerService
-from online.stress_recognizer.util.constants import DataMode
+import uvicorn
+from fastapi import FastAPI
 
-eeg_device_service = EEGDeviceService()
-
-stress_recognizer_service = StressRecognizerService()
+from online.backend.api.api import api_routers
 
 
-async def do_predict():
-    eeg_device_service.start()
-    await asyncio.sleep(10)
-    data = eeg_device_service.get_data(only_eeg=True)
-    prediction = await stress_recognizer_service.predict_stress(data, DataMode.RAW)
-    print(prediction)
+app = FastAPI()
 
-asyncio.run(do_predict())
+for api_router in api_routers:
+    app.include_router(api_router, prefix="/api")
+
+
+async def main():
+    uvicorn.run(app="main:app", host='localhost', port=3000, reload=True)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
