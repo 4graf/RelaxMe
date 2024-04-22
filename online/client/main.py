@@ -1,4 +1,5 @@
 import asyncio
+import random
 import time
 from datetime import datetime
 
@@ -26,6 +27,7 @@ async def do_predict():
     data_plot = [[0] for _ in range(count_channels)]
 
     fig, axs = plt.subplots(count_channels, 1, sharex=True, constrained_layout=True)
+    fig.canvas.manager.set_window_title('RelaxMe')
     colors = plt.cm.jet(np.linspace(0, 1, count_channels))
     lines = []
     for ax, data, label, color in zip(axs, data_plot, eeg_device_service.channel_names, colors):
@@ -34,7 +36,6 @@ async def do_predict():
 
     fig.legend(labels=eeg_device_service.channel_names,
                loc="upper right")
-    predictions = []
     plt.ion()
     plt.show(block=False)
 
@@ -51,27 +52,28 @@ async def do_predict():
         # async with AsyncClient() as client:
         #     response = await client.post('http://localhost:3000/api/v1/stress/predict', json={'data': data.tolist()})
         #     prediction = response.json()
-        # print(prediction)
-        prediction = [1]
+
+        prediction = random.randint(0, 1)  # Mock
 
         new_data_plot = data.tolist()
+        predict_x_start = len(data_plot[0])
         # x.extend([x[-1] + (i / eeg_device_service.sampling_rate) for i in range(1, len(new_data_plot[0])+1)])
         for all_data_plot, new_data in zip(data_plot, new_data_plot):
             all_data_plot.extend(new_data)
+        predict_x_stop = len(data_plot[0])
+
+        predict_color = 'g' if prediction == 0 else 'r'
 
         for ax, line, data in zip(axs, lines, data_plot):  # ToDo: Замерить время. При необходимости оптимизировать zip
             line.set_data(x[:len(data)], data)
 
-            # ax.axvspan(x[-1]-1, x[-1], facecolor='r', alpha=0.2)
+            ax.axvspan(x[predict_x_start], x[predict_x_stop], facecolor=predict_color, alpha=0.2)
 
             ax.relim()
             ax.autoscale_view()
 
             ax.draw_artist(ax.patch)
             ax.draw_artist(line)
-
-
-
 
         fig.canvas.update()
         fig.canvas.flush_events()
