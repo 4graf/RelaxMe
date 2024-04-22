@@ -1,65 +1,145 @@
-# import asyncio
-#
-# from httpx import AsyncClient
-#
-# from online.client.EEG.services.EEG_device_service import EEGDeviceService
-# from online.stress_recognizer.services.stress_recognizer_service import StressRecognizerService
-# from online.stress_recognizer.util.constants import DataMode
-#
-# eeg_device_service = EEGDeviceService()
-#
-# # stress_recognizer_service = StressRecognizerService()
-#
-#
-# async def do_predict():
-#     eeg_device_service.start()
-#
-#     for _ in range(10):
-#         await asyncio.sleep(5)
-#         data = eeg_device_service.get_data(only_eeg=True)
-#
-#         # prediction = await stress_recognizer_service.predict_stress(data, DataMode.RAW)
-#         async with AsyncClient() as client:
-#             response = await client.post('http://localhost:3000/api/v1/stress/predict', json={'data': data.tolist()})
-#             prediction = response.json()
-#         print(prediction)
-#
-# asyncio.run(do_predict())
+import asyncio
+import time
+from datetime import datetime
+
+from httpx import AsyncClient
+
+from online.client.EEG.services.EEG_device_service import EEGDeviceService
+from online.stress_recognizer.services.stress_recognizer_service import StressRecognizerService
+from online.stress_recognizer.util.constants import DataMode
 
 from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-def get_y(x):
-    # return x**2
-    return np.sin(x)
+eeg_device_service = EEGDeviceService()
+
+# stress_recognizer_service = StressRecognizerService()
 
 
-x = [0.]
-y = [get_y(x[-1])]
+async def do_predict():
+    eeg_device_service.start()
+
+    x = [0]
+    data_plot = [[0] for _ in range(2)]
+
+
+    fig, axs = plt.subplots(2, 1, sharex=True)
+    lines = [ax.plot(x, data)[0] for ax, data in zip(axs, data_plot)]
+    plt.ion()
+    plt.show(block=False)
+
+    def update(frame):
+
+
+        # new_x = np.arange(x[-1], datetime.now(), 1/250).tolist()
+        new_x = [x[-1] + ((i+1) * 0.004) for i in range(len(new_data_plot[0]))]
+        x.extend(new_x)
+        for i in range(2):
+            data_plot[i].extend(new_data_plot[i])
+            lines[i].set_data(x, data_plot[i])
+            axs[i].relim()
+            axs[i].autoscale_view()
+
+        print('new draw')
+
+        # for ax, line in zip(axs, lines):  # ToDo: Замерить время. При необходимости оптимизировать zip
+        #     line.set_data(x, y)
+        #     ax.relim()
+        #     ax.autoscale_view()
+
+    # x.extend([2, 3, 4, 5])
+    # data_plot[0].extend([1, 3, 2, 7])
+    # data_plot[1].extend([1, 1, 2, 10])
+
+    # for ax, line, data in zip(axs, lines, data_plot):  # ToDo: Замерить время. При необходимости оптимизировать zip
+    #     line.set_data(x, data)
+    #     ax.draw_artist(ax.patch)
+    #     ax.draw_artist(line)
+    #     fig.canvas.update()
+    #     fig.canvas.flush_events()
+    #     ax.relim()
+    #     ax.autoscale_view()
+
+    # anim = FuncAnimation(fig, update, interval=1000)
+    # plt.draw()
+    last_x = 0
+    for j in range(1, 10000000):
+        # time.sleep(5)
+        # await asyncio.sleep(5)
+        # data = eeg_device_service.get_data(only_eeg=True)
+
+        plt.pause(1)
+        data = eeg_device_service.get_data(only_eeg=True)
+
+        # data = np.random.rand(2, 10)
+        new_data_plot = data.copy().tolist()[:2]
+        print('new data')
+        x.extend([last_x + (0.004*i) for i in range(1, len(new_data_plot[0])+1)])
+        last_x = x[-1]
+        data_plot[0].extend(new_data_plot[0])
+        data_plot[1].extend(new_data_plot[1])
+
+
+        for ax, line, data in zip(axs, lines, data_plot):  # ToDo: Замерить время. При необходимости оптимизировать zip
+            line.set_data(x, data)
+
+            ax.relim()
+            ax.autoscale_view()
+
+            ax.draw_artist(ax.patch)
+            ax.draw_artist(line)
+
+            fig.canvas.update()
+            fig.canvas.flush_events()
+        # plt.pause(1)
+
+    # for _ in range(10):
+    #     await asyncio.sleep(1)
+    #     # data = eeg_device_service.get_data(only_eeg=True)
+    #     data = np.random.rand(2, 10)
+    #     new_data_plot = data.copy().tolist()[:2]
+    #     print(anim.new_frame_seq())
+
+        # prediction = await stress_recognizer_service.predict_stress(data, DataMode.RAW)
+        # async with AsyncClient() as client:
+        #     response = await client.post('http://localhost:3000/api/v1/stress/predict', json={'data': data.tolist()})
+        #     prediction = response.json()
+        # print(prediction)
+
+asyncio.run(do_predict())
+
+
+# def get_y(x):
+#     # return x**2
+#     return np.sin(x)
+
+
+# x = [0.]
+# y = [get_y(x[-1])]
 # y = [random.randint(1, 10)]
 
-fig, axs = plt.subplots(8, 1, sharex=True)
-lines = [ax.plot(x, y)[0] for ax in axs]
+# fig, axs = plt.subplots(8, 1, sharex=True)
+# lines = [ax.plot(x, y)[0] for ax in axs]
 
 
-def update(frame):
-    global axs
-
-    new_x = x[-1] + 0.1
-    x.append(new_x)
-    # y.append(random.randint(1, 10))
-    y.append(get_y(new_x))
-    # new_y = [random.randint(1, 10) for _ in range(len(y))]
-    for ax, line in zip(axs, lines):  # ToDo: Замерить время. При необходимости оптимизировать zip
-        line.set_data(x, y)
-        ax.relim()
-        ax.autoscale_view()
-
-
-anim = FuncAnimation(fig, update, frames=1)
-plt.show()
+# def update(frame):
+#     global axs
+#
+#     new_x = x[-1] + 0.1
+#     x.append(new_x)
+#     # y.append(random.randint(1, 10))
+#     y.append(get_y(new_x))
+#     # new_y = [random.randint(1, 10) for _ in range(len(y))]
+#     for ax, line in zip(axs, lines):  # ToDo: Замерить время. При необходимости оптимизировать zip
+#         line.set_data(x, y)
+#         ax.relim()
+#         ax.autoscale_view()
+#
+#
+# anim = FuncAnimation(fig, update, frames=1)
+# plt.show()
 
 
 # import numpy as np
