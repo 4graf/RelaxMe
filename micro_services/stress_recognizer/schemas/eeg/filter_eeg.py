@@ -1,0 +1,2 @@
+class FilterEEG:
+    data: list
