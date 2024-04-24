@@ -1,8 +1,0 @@
-torch==2.1.1
-fastapi==0.110.1
-numpy==1.24.2
-mne==1.6.1
-scipy==1.10.1
-uvicorn==0.29.0
-pydantic==2.6.0
-pydantic_settings==2.2.1
