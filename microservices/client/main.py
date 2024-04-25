@@ -42,12 +42,11 @@ async def do_predict():
         plt.pause(1)
         data = eeg_device_service.get_data(only_eeg=True)
 
-        # prediction = await stress_recognizer_service.predict_stress(data, DataMode.RAW)
-        # async with AsyncClient() as client:
-        #     response = await client.post('http://localhost:3000/api/v1/stress/predict', json={'data': data.tolist()})
-        #     prediction = response.json()
+        async with AsyncClient() as client:
+            response = await client.post('http://localhost:3000/api/v1/stress/predict', json={'data': data.tolist()})
+            prediction = response.json()
 
-        prediction = random.randint(0, 1)  # Mock
+        # prediction = random.randint(0, 1)  # Mock-заглушка
 
         new_data_plot = data.tolist()
         predict_x_start = len(data_plot[0])
@@ -71,7 +70,6 @@ async def do_predict():
 
         fig.canvas.update()
         fig.canvas.flush_events()
-        # plt.pause(1)
 
 
 asyncio.run(do_predict())
