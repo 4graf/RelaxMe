@@ -1,0 +1,2 @@
+class Features:
+    data: list

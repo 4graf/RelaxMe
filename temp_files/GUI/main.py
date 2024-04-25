@@ -1,28 +1,23 @@
-import os.path
 import sys
 
 # import matplotlib
 # import matplotlib.pyplot as plt
 # import mne
 # import numpy as np
-from PySide6 import QtCore
-from PySide6.QtCore import Qt, QUrl
-from PySide6.QtGui import QPixmap
-from PySide6.QtMultimedia import QMediaPlayer
-from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtWidgets import QApplication, QFileDialog
 from PySide6.QtWidgets import QMainWindow, QWidget
 
-from relax_window import RelaxWindow
+from temp_files.GUI.windows.relax_window import RelaxWindow
+from settings import stress_video_id, survey_url
 # from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg as FigureCanvas,
 #                                                NavigationToolbar2QT as NavigationToolbar)
 
 # from classification import EEGClassifier
-from ui_main_window import Ui_MainWindow
 # from preprocessing import EEGPreprocessing
-from themes import ThemeGUI
-from ui_startup_window import Ui_StartupWindow
-from windows.video_window import VideoWindow
+from temp_files.GUI.windows.themes import ThemeGUI
+from temp_files.GUI.windows.ui_startup_window import Ui_StartupWindow
+from temp_files.GUI.windows.survey_window import SurveyWindow
+from temp_files.GUI.windows.video_window import VideoWindow
 
 
 # matplotlib.use('Qt5Agg')
@@ -46,6 +41,8 @@ class MainWindow(QMainWindow):
 
         self.stress_video_window = None
         self.relax_window = None
+        self.survey_window = None
+
         # self.relax_window = RelaxWindow()
 
         # Класс для предобработки данных ЭЭГ
@@ -69,6 +66,7 @@ class MainWindow(QMainWindow):
 
         self.ui.start_btn.clicked.connect(self.start_relax)
         self.ui.stress_video_btn.clicked.connect(self.open_stress_video)
+        self.ui.testing_btn.clicked.connect(self.start_survey)
 
         self.showMaximized()
 
@@ -84,9 +82,14 @@ class MainWindow(QMainWindow):
         # self.player.setVideoOutput(self.stress_video_window)
         # self.stress_video_window.show()
         # self.player.play()
-    
-        self.stress_video_window = VideoWindow()
-        self.stress_video_window.show()
+        if not self.stress_video_window or not self.stress_video_window.isVisible():
+            self.stress_video_window = VideoWindow(stress_video_id)
+            self.stress_video_window.show()
+
+    def start_survey(self):
+        if not self.survey_window or not self.survey_window.isVisible():
+            self.survey_window = SurveyWindow(survey_url)
+            self.survey_window.show()
 
     def open_file(self):
         path = QFileDialog.getOpenFileName(self, 'Open file',

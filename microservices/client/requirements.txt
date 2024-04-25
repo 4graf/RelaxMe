@@ -1,0 +1,4 @@
+brainflow==5.12.1
+matplotlib==3.6.3
+numpy==1.24.2
+httpx==0.25.0
