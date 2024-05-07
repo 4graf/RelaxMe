@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StartupWindow</class>
+ <widget class="QMainWindow" name="StartupWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>812</width>
+    <height>583</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MyRelax - Hub</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#MainWindow *{
+  background-color: #f0f3ff;
+}
+
+#centralwidget QLabel{
+  color: #000000;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+QPushButton{
+  padding: 12px 24px;
+  border-style: inset;
+  border-width: 3px;
+  border-radius: 20px;
+  border-color: #816e9c;
+  background: #f5f6fc;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 20px 0px;
+}
+
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="0">
+     <widget class="QStackedWidget" name="content_widget">
+      <widget class="QWidget" name="main_page">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="3" column="1" alignment="Qt::AlignmentFlag::AlignVCenter">
+           <widget class="QPushButton" name="stress_video_btn">
+            <property name="text">
+             <string>Стрессовое видео</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" alignment="Qt::AlignmentFlag::AlignVCenter">
+           <widget class="QPushButton" name="testing_btn">
+            <property name="text">
+             <string>Пройти тестирование</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2" alignment="Qt::AlignmentFlag::AlignVCenter">
+           <widget class="QPushButton" name="instruction_btn">
+            <property name="text">
+             <string>Инструкция</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" alignment="Qt::AlignmentFlag::AlignVCenter">
+           <widget class="QPushButton" name="start_btn">
+            <property name="text">
+             <string>Начать релакс</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="testing_page">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="question_label">
+            <property name="text">
+             <string>question</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QRadioButton" name="radioButton">
+              <property name="text">
+               <string>RadioButton</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item alignment="Qt::AlignmentFlag::AlignRight">
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Продолжить</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QFrame" name="header_frame">
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item alignment="Qt::AlignmentFlag::AlignLeft">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignmentFlag::AlignHCenter">
+        <widget class="QLabel" name="main_label">
+         <property name="text">
+          <string>MyRelax</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignmentFlag::AlignRight">
+        <widget class="QPushButton" name="change_theme_btn">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Сменить тему</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="open_file_action">
+   <property name="text">
+    <string>Открыть файл...</string>
+   </property>
+  </action>
+  <action name="light_theme_action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Светлая</string>
+   </property>
+  </action>
+  <action name="dark_theme_action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Тёмная</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
