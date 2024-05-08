@@ -1,12 +1,15 @@
+import json
 import sys
 
+from PySide6.QtCore import QCoreApplication
 # import matplotlib
 # import matplotlib.pyplot as plt
 # import mne
 # import numpy as np
-from PySide6.QtWidgets import QApplication, QFileDialog
+from PySide6.QtWidgets import QApplication, QFileDialog, QRadioButton, QGroupBox, QButtonGroup
 from PySide6.QtWidgets import QMainWindow, QWidget
 
+from microservices.client.GUI.utils import QUESTIONARY
 from microservices.client.GUI.windows.relax_window import RelaxWindow
 from microservices.client.GUI.windows.themes import ThemeGUI
 from microservices.client.GUI.windows.video_window import VideoWindow
@@ -43,6 +46,17 @@ class MainWindow(QMainWindow):
         self.relax_window = None
         self.survey_window = None
 
+        self.questionary = QUESTIONARY
+        self.questionary_results = None
+        self.questionary_current_id = -1
+        self.quest_button_group = None
+
+
+        # self.data = [{'question': 'Вопрос знатокам', 'answers': ['1 ответ', '2 answ', '333']},
+        #              {'question': 'Вопрос знатокам 2', 'answers': ['1 ответ', '2 answ', '333']}
+        #              ]
+
+
         # self.relax_window = RelaxWindow()
 
         # Класс для предобработки данных ЭЭГ
@@ -68,6 +82,7 @@ class MainWindow(QMainWindow):
         self.ui.stress_video_btn.clicked.connect(self.open_stress_video)
         # self.ui.testing_btn.clicked.connect(self.start_survey)
         self.ui.testing_btn.clicked.connect(self.survey_show)
+        self.ui.pushButton.clicked.connect(self.survey_next)
 
         self.showMaximized()
 
@@ -87,11 +102,48 @@ class MainWindow(QMainWindow):
             self.stress_video_window = VideoWindow(stress_video_id)
             self.stress_video_window.show()
 
-    def start_survey(self):
+    def build_survey(self):
+        data = [{'question': 'Вопрос знатокам', 'answers': ['1 ответ', '2 answ', '333']},
+                {'question': 'Вопрос знатокам 2', 'answers': ['1 ответ', '2 answ', '333']}
+                ]
+
+        self.ui.question_label.setText(data['question'])
+        for answer in data['answers']:
+            radio_btn = QRadioButton(self.ui.testing_page)
+            radio_btn.setText(QCoreApplication.translate("StartUpWindow", f"{answer}", None))
+            self.ui.verticalLayout_4.addWidget(radio_btn)
+
+    def survey_next(self):
         # if not self.survey_window or not self.survey_window.isVisible():
         #     self.survey_window = SurveyWindow(survey_url)
         #     self.survey_window.show()
-        ...
+
+        if self.questionary_current_id != -1:
+            self.questionary_results.append({'question': self.questionary[self.questionary_current_id]['question'],
+                                             'answer': self.quest_button_group.checkedId()})
+            # self.questionary_results.append(self.group_box.checkedId())
+            print(self.questionary_results)
+        if self.questionary_current_id == len(self.questionary) - 1:
+            ...
+            self.questionary_current_id = -1
+            print('bebera')
+            return
+
+        self.questionary_current_id += 1
+
+        self.quest_button_group = QButtonGroup(self.ui.testing_page)
+
+        data = self.questionary[self.questionary_current_id]
+
+        self.ui.question_label.setText(data['question'])
+        self._clear_children(self.ui.verticalLayout_4)
+        for id, answer in enumerate(data['answers']):
+            radio_btn = QRadioButton(answer, self.ui.testing_page)
+            self.ui.verticalLayout_4.addWidget(radio_btn)
+            self.quest_button_group.addButton(radio_btn, id)
+
+
+
     def open_file(self):
         path = QFileDialog.getOpenFileName(self, 'Open file',
                                            dir='data')[0]
@@ -118,6 +170,11 @@ class MainWindow(QMainWindow):
         self.ui.content_widget.setCurrentIndex(0)
 
     def survey_show(self):
+        # with open('microservices/client/questionary_data.json', mode='r') as f:
+        #     self.questionary = json.load(f)['questions']
+        self.questionary_results = []
+
+        self.survey_next()
         self.ui.content_widget.setCurrentIndex(1)
 
     # def classification_show(self):
