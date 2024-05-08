@@ -102,16 +102,16 @@ class MainWindow(QMainWindow):
             self.stress_video_window = VideoWindow(stress_video_id)
             self.stress_video_window.show()
 
-    def build_survey(self):
-        data = [{'question': 'Вопрос знатокам', 'answers': ['1 ответ', '2 answ', '333']},
-                {'question': 'Вопрос знатокам 2', 'answers': ['1 ответ', '2 answ', '333']}
-                ]
-
-        self.ui.question_label.setText(data['question'])
-        for answer in data['answers']:
-            radio_btn = QRadioButton(self.ui.testing_page)
-            radio_btn.setText(QCoreApplication.translate("StartUpWindow", f"{answer}", None))
-            self.ui.verticalLayout_4.addWidget(radio_btn)
+    # def build_survey(self):
+    #     data = [{'question': 'Вопрос знатокам', 'answers': ['1 ответ', '2 answ', '333']},
+    #             {'question': 'Вопрос знатокам 2', 'answers': ['1 ответ', '2 answ', '333']}
+    #             ]
+    #
+    #     self.ui.question_label.setText(data['question'])
+    #     for answer in data['answers']:
+    #         radio_btn = QRadioButton(self.ui.testing_page)
+    #         radio_btn.setText(QCoreApplication.translate("StartUpWindow", f"{answer}", None))
+    #         self.ui.verticalLayout_4.addWidget(radio_btn)
 
     def survey_next(self):
         # if not self.survey_window or not self.survey_window.isVisible():
@@ -161,6 +161,8 @@ class MainWindow(QMainWindow):
     def survey_show(self):
         self.questionary_results = []
 
+        self.survey_instruction_show()
+
         self.survey_next()
         self.ui.content_widget.setCurrentIndex(1)
 
@@ -169,11 +171,21 @@ class MainWindow(QMainWindow):
         self.ui.content_widget.setCurrentIndex(2)
 
     def survey_end_show(self):
-        msgBox = QMessageBox()
-        msgBox.setText("Результаты вашей анкеты сохранены.")
+        msg_box = QMessageBox()
+        msg_box.setText("Результаты вашей анкеты сохранены.")
         # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
         # msgBox.setDefaultButton(QMessageBox.Save)
-        msgBox.exec()
+        msg_box.exec()
+
+    def survey_instruction_show(self):
+        msg_box = QMessageBox()
+        msg_box.setText("«Безопасное место»")
+        msg_box.setInformativeText("Инструкция: ответьте на 10 представленных ниже вопросов, "
+                                   "выбрав один наиболее подходящий вариант, и получите в результате "
+                                   "персональную карточку сценария релаксации RelaxMe.")
+        # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+        # msgBox.setDefaultButton(QMessageBox.Save)
+        msg_box.exec()
 
     # def classification_show(self):
     #     self.ui.view_widget.setCurrentIndex(2)

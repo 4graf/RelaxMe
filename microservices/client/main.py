@@ -6,11 +6,8 @@ import numpy as np
 from httpx import AsyncClient
 
 from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
-from microservices.stress_recognizer.services.stress_recognizer_service import StressRecognizerService
 
 eeg_device_service = EEGDeviceService()
-
-stress_recognizer_service = StressRecognizerService()
 
 
 async def do_predict():
