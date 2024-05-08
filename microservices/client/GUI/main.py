@@ -6,7 +6,7 @@ from PySide6.QtCore import QCoreApplication
 # import matplotlib.pyplot as plt
 # import mne
 # import numpy as np
-from PySide6.QtWidgets import QApplication, QFileDialog, QRadioButton, QGroupBox, QButtonGroup
+from PySide6.QtWidgets import QApplication, QFileDialog, QRadioButton, QGroupBox, QButtonGroup, QMessageBox
 from PySide6.QtWidgets import QMainWindow, QWidget
 
 from microservices.client.GUI.utils import QUESTIONARY
@@ -124,33 +124,22 @@ class MainWindow(QMainWindow):
             # self.questionary_results.append(self.group_box.checkedId())
             print(self.questionary_results)
         if self.questionary_current_id == len(self.questionary) - 1:
-            ...
             self.questionary_current_id = -1
-            print('bebera')
-            return
+            self.survey_end_show()
+            self.startup_show()
+        else:
+            self.questionary_current_id += 1
 
-        self.questionary_current_id += 1
+            self.quest_button_group = QButtonGroup(self.ui.testing_page)
 
-        self.quest_button_group = QButtonGroup(self.ui.testing_page)
+            data = self.questionary[self.questionary_current_id]
 
-        data = self.questionary[self.questionary_current_id]
-
-        self.ui.question_label.setText(data['question'])
-        self._clear_children(self.ui.verticalLayout_4)
-        for id, answer in enumerate(data['answers']):
-            radio_btn = QRadioButton(answer, self.ui.testing_page)
-            self.ui.verticalLayout_4.addWidget(radio_btn)
-            self.quest_button_group.addButton(radio_btn, id)
-
-
-
-    def open_file(self):
-        path = QFileDialog.getOpenFileName(self, 'Open file',
-                                           dir='data')[0]
-        # self.record_idx = self.eeg_preproc.filenames.index(f'data/{os.path.basename(path)}')
-        # self._draw_classification()
-        # self._draw_chart()
-        # self._draw_raw_data()
+            self.ui.question_label.setText(data['question'])
+            self._clear_children(self.ui.verticalLayout_4)
+            for i, answer in enumerate(data['answers']):
+                radio_btn = QRadioButton(answer, self.ui.testing_page)
+                self.ui.verticalLayout_4.addWidget(radio_btn)
+                self.quest_button_group.addButton(radio_btn, i)
 
     def make_light_theme(self):
         if self.ui.light_theme_action.isChecked():
@@ -170,12 +159,21 @@ class MainWindow(QMainWindow):
         self.ui.content_widget.setCurrentIndex(0)
 
     def survey_show(self):
-        # with open('microservices/client/questionary_data.json', mode='r') as f:
-        #     self.questionary = json.load(f)['questions']
         self.questionary_results = []
 
         self.survey_next()
         self.ui.content_widget.setCurrentIndex(1)
+
+    def result_show(self):
+        ...
+        self.ui.content_widget.setCurrentIndex(2)
+
+    def survey_end_show(self):
+        msgBox = QMessageBox()
+        msgBox.setText("Результаты вашей анкеты сохранены.")
+        # msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+        # msgBox.setDefaultButton(QMessageBox.Save)
+        msgBox.exec()
 
     # def classification_show(self):
     #     self.ui.view_widget.setCurrentIndex(2)

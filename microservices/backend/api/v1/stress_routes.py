@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from starlette import status
 
-from microservices.backend.api.dependencies import get_stress_service
+from microservices.backend.api.dependencies.service import get_stress_service
 from microservices.backend.interfaces.services.abstract_stress_service import AbstractStressService
 from microservices.backend.schemas.eeg_data import EEGData
 from microservices.backend.schemas.stress_prediction import StressPrediction
