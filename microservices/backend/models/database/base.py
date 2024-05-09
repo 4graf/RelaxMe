@@ -14,4 +14,4 @@ class Base(DeclarativeBase):
     Базовая модель для SQLAlchemy моделей.
     """
 
-    # __abstract__ = True
+    __abstract__ = True

@@ -11,7 +11,7 @@ class EndpointSettings(BaseSettings):
 
 class DatabaseSettings(BaseSettings):
     """
-    Представляет настройки к БД
+    Настройки к базе данных.
 
     Attributes:
         postgres_url: Строка подключения к PostgreSQL.

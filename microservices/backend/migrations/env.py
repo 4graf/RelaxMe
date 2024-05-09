@@ -1,21 +1,24 @@
 import asyncio
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, Connection
+from sqlalchemy import Connection
 from sqlalchemy import pool
 
 from alembic import context
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from microservices.backend.models.database.base import Base
+from microservices.backend.models.database.safe_place import SafePlace
+from microservices.backend.models.database.user import User
 from microservices.backend.settings import DatabaseSettings
+
 
 settings = DatabaseSettings()
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.postgresql_url.unicode_string())
+config.set_main_option("sqlalchemy.url", settings.postgres_url.unicode_string())
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
