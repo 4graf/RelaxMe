@@ -1,7 +1,7 @@
 from fastapi import Depends
 from httpx import AsyncClient
 
-from microservices.backend.repositories.base import get_async_client
+from microservices.backend.repositories.rest_api.base import get_async_client
 from microservices.backend.repositories.rest_api.stress_repository import StressRepository
 from microservices.backend.services.stress_service import StressService
 

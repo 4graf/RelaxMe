@@ -7,9 +7,9 @@ from sqlalchemy import pool
 from alembic import context
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from microservices.backend.models.database.base import Base
-from microservices.backend.models.database.safe_place import SafePlace
-from microservices.backend.models.database.user import User
+from microservices.backend.models.database.base import BaseModel
+from microservices.backend.models.database.safe_place import SafePlaceModel
+from microservices.backend.models.database.user import UserModel
 from microservices.backend.settings import DatabaseSettings
 
 
@@ -29,7 +29,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata
+target_metadata = BaseModel.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

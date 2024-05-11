@@ -1,5 +1,5 @@
-from pydantic import BaseModel
+from microservices.backend.schemas.base import BaseSchema
 
 
-class EEGData(BaseModel):
+class EEGData(BaseSchema):
     data: list

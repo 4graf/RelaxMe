@@ -9,7 +9,7 @@ from sqlalchemy.orm import declarative_base
 DeclarativeBase = declarative_base()
 
 
-class Base(DeclarativeBase):
+class BaseModel(DeclarativeBase):
     """
     Базовая модель для SQLAlchemy моделей.
     """

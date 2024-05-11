@@ -1,5 +1,5 @@
-from pydantic import BaseModel
+from microservices.backend.schemas.base import BaseSchema
 
 
-class StressPrediction(BaseModel):
+class StressPrediction(BaseSchema):
     labels: list[int]
