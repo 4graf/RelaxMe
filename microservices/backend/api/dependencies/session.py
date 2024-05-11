@@ -7,7 +7,7 @@ engine = create_async_engine(settings.postgres_url.unicode_string(), echo=False)
 async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
-async def get_async_session() -> AsyncSession:
+async def get_async_db_session() -> AsyncSession:
     """
     Получает асинхронную сессию для взаимодействия с базой данных.
 
@@ -22,3 +22,9 @@ async def get_async_session() -> AsyncSession:
             await session.rollback()
         finally:
             await session.close()
+
+
+async def validate_token() -> ...:
+    ...
+
+    return '1'  # ToDo: исправить с токеном
