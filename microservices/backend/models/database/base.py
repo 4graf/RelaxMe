@@ -4,9 +4,7 @@
 Этот модуль предоставляет базовую модель для SQLAlchemy моделей.
 
 """
-from sqlalchemy.orm import declarative_base
-
-DeclarativeBase = declarative_base()
+from sqlalchemy.orm import DeclarativeBase
 
 
 class BaseModel(DeclarativeBase):

@@ -10,7 +10,8 @@ from microservices.backend.schemas.stress_prediction import StressPrediction
 class StressService(AbstractStressService):
     stress_repo: AbstractStressRepository
 
-    def __init__(self, stress_repo: StressRepository, eeg_repo: EEGRepository):
+    # def __init__(self, stress_repo: StressRepository, eeg_repo: EEGRepository):
+    def __init__(self, stress_repo: StressRepository, eeg_repo):
         """
         Инициализация сервиса для работы со стрессом.
 

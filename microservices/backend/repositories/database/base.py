@@ -2,6 +2,7 @@ from abc import ABC
 from typing import Any, Sequence
 from uuid import UUID
 
+from sqlalchemy import insert, update, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from microservices.backend.models.database.base import BaseModel
@@ -17,7 +18,7 @@ class BaseDBRepository(ABC):
 
     async def _add(self, data: Payload | list[Payload]) -> BaseModel | Sequence[BaseModel]:
         stmt = (
-            self.model.insert()
+            insert(self.model)
             .values(data)
             .returning(self.model)
         )
@@ -29,7 +30,7 @@ class BaseDBRepository(ABC):
 
     async def _update(self, id_: UUID, data: Payload) -> BaseModel:
         stmt = (
-            self.model.update()
+            update(self.model)
             .values(data)
             .filter(self.model.id == id_)
             .returning(self.model)
@@ -42,7 +43,7 @@ class BaseDBRepository(ABC):
 
     async def _get(self, id_: UUID) -> BaseModel:
         stmt = (
-            self.model.select()
+            select(self.model)
             .filter(self.model.id == id_)
         )
 
@@ -53,7 +54,7 @@ class BaseDBRepository(ABC):
 
     async def _get_all(self) -> Sequence[BaseModel]:
         stmt = (
-            self.model.select()
+            select(self.model)
         )
 
         result = await self.session.execute(stmt)

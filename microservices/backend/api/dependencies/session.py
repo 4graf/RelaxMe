@@ -17,9 +17,10 @@ async def get_async_db_session() -> AsyncSession:
     async with async_session_maker() as session:
         try:
             yield session
-        except Exception as e:
+        except Exception:
             ...
             await session.rollback()
+            raise
         finally:
             await session.close()
 
