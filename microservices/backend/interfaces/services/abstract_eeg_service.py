@@ -8,5 +8,5 @@ class AbstractEEGService(ABC):
     eeg_repo: AbstractEEGRepository
 
     @abstractmethod
-    async def add_eeg(self, data: EEGAdd):
+    async def add_eeg(self, eeg_add: EEGAdd):
         ...

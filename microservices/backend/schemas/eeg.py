@@ -17,3 +17,9 @@ class EEGAdd(BaseSchema):
     user_id: UUID
     state: int
     data: list
+
+
+class EEGPredictRequest(BaseSchema):
+    user_id: UUID
+    data: list
+
