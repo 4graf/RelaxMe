@@ -15,4 +15,4 @@ class UserModel(BaseModel):
     password_hash: Mapped[str] = mapped_column(String(length=1024), unique=True)
     safe_place_id: Mapped[UUID] = mapped_column(ForeignKey("safe_place.id"), nullable=True)
 
-    safe_place: Mapped["SafePlaceModel"] = relationship("SafePlaceModel", back_populates='users')
+    safe_place: Mapped["SafePlaceModel"] = relationship(back_populates='users')

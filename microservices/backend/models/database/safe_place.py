@@ -12,4 +12,4 @@ class SafePlaceModel(BaseModel):
     id: Mapped[UUID] = mapped_column(primary_key=True, server_default=text('gen_random_uuid()'))
     ...
 
-    users: Mapped[list["UserModel"]] = relationship("UserModel", back_populates='safe_place')
+    users: Mapped[list["UserModel"]] = relationship(back_populates='safe_place')
