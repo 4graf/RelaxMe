@@ -24,7 +24,7 @@ def upgrade() -> None:
     sa.Column('added_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('user_id', sa.Uuid(), nullable=False),
     sa.Column('state', sa.SmallInteger(), nullable=False),
-    sa.Column('values', sa.ARRAY(sa.Double(), dimensions=2), nullable=False),
+    sa.Column('data', sa.ARRAY(sa.Double(), dimensions=2), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user_app.id'], ),
     sa.PrimaryKeyConstraint('added_at', 'user_id')
     )

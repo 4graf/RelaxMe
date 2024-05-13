@@ -1,3 +1,4 @@
+import logging
 from uuid import UUID
 
 from microservices.backend.interfaces.repositories.abstract_user_repository import AbstractUserRepository
@@ -16,3 +17,7 @@ class UserRepository(AbstractUserRepository, BaseDBRepository):
         user = await self._get(id_)
         return User.model_validate(user)
 
+    async def get_all_users(self) -> list[User]:
+        users = await self._get_all()
+        logging.warning(users)
+        return [User.model_validate(user) for user in users]

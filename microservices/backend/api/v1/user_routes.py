@@ -27,16 +27,27 @@ async def add_user(user: UserAdd,
     await user_service.add_user(user)
 
 
-@router.get("/{id_}", status_code=status.HTTP_200_OK)
-async def get_user(id_: UUID,
+@router.get("/all", status_code=status.HTTP_200_OK)
+async def get_users(user_service: Annotated[AbstractUserService, Depends(get_user_service)]) \
+        -> list[User]:
+    """
+    Получает данные всех пользователей
+
+        :param user_service: Сервис для работы с пользователями.
+        :return: Данные пользователя.
+    """
+    return await user_service.get_all_users()
+
+
+@router.get("/{user_id}", status_code=status.HTTP_200_OK)
+async def get_user(user_id: UUID,
                    user_service: Annotated[AbstractUserService, Depends(get_user_service)]) \
         -> User:
     """
     Получает данные пользователя по его идентификатору
 
-        :param id_: Идентификатор пользователя.
+        :param user_id: Идентификатор пользователя.
         :param user_service: Сервис для работы с пользователями.
         :return: Данные пользователя.
     """
-    return await user_service.get_user(id_)
-
+    return await user_service.get_user(user_id)

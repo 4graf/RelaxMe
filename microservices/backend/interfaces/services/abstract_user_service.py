@@ -15,3 +15,7 @@ class AbstractUserService(ABC):
     @abstractmethod
     async def get_user(self, id_: UUID) -> User:
         ...
+
+    @abstractmethod
+    async def get_all_users(self) -> list[User]:
+        ...

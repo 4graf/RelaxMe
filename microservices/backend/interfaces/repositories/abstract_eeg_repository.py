@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from microservices.backend.schemas.eeg_data import EEGData
+from microservices.backend.schemas.eeg import EEG
 
 
 class AbstractEEGRepository(ABC):
     @abstractmethod
-    async def add_eeg(self, data: EEGData):
+    async def add_eeg(self, data: EEG):
         ...

@@ -2,7 +2,7 @@ from microservices.backend.interfaces.repositories.abstract_stress_repository im
 from microservices.backend.models.rest_api.eeg_data import EEGDataRest
 from microservices.backend.models.rest_api.prediction import PredictionRest
 from microservices.backend.repositories.rest_api.base import BaseRestApiRepository
-from microservices.backend.schemas.eeg_data import EEGData
+from microservices.backend.schemas.eeg import EEGData
 from microservices.backend.schemas.stress_prediction import StressPrediction
 from microservices.backend.settings import EndpointSettings
 

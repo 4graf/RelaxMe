@@ -10,7 +10,7 @@ from microservices.backend.schemas.user import User, UserAdd
 class UserService(AbstractUserService):
     user_repo: AbstractUserRepository
 
-    def __init__(self, user_repo: UserRepository):
+    def __init__(self, user_repo: AbstractUserRepository):
         """
         Инициализация сервиса для работы с пользователями.
 
@@ -29,3 +29,7 @@ class UserService(AbstractUserService):
     async def get_user(self, id_: UUID) -> User:
         user = await self.user_repo.get_user(id_)
         return user
+
+    async def get_all_users(self) -> list[User]:
+        users = await self.user_repo.get_all_users()
+        return users

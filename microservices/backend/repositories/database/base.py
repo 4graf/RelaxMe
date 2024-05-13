@@ -49,7 +49,6 @@ class BaseDBRepository(ABC):
 
         result = await self.session.execute(stmt)
         result = result.scalar_one_or_none()
-        await self.session.commit()
         return result
 
     async def _get_all(self) -> Sequence[BaseModel]:
@@ -59,5 +58,4 @@ class BaseDBRepository(ABC):
 
         result = await self.session.execute(stmt)
         result = result.scalars().all()
-        await self.session.commit()
         return result

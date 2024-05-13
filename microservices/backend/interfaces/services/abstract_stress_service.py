@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from microservices.backend.interfaces.repositories.abstract_stress_repository import AbstractStressRepository
-from microservices.backend.schemas.eeg_data import EEGData
+from microservices.backend.schemas.eeg import EEGData
 
 
 class AbstractStressService(ABC):
