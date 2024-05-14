@@ -13,6 +13,7 @@ from microservices.client.GUI.utils import QUESTIONARY
 from microservices.client.GUI.windows.relax_window import RelaxWindow
 from microservices.client.GUI.windows.themes import ThemeGUI
 from microservices.client.GUI.windows.video_window import VideoWindow
+from microservices.client.safe_place.safe_place import SafePlaceDecider
 from settings import stress_video_id, survey_url
 # from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg as FigureCanvas,
 #                                                NavigationToolbar2QT as NavigationToolbar)
@@ -126,6 +127,10 @@ class MainWindow(QMainWindow):
         if self.questionary_current_id == len(self.questionary) - 1:
             self.questionary_current_id = -1
             self.survey_end_show()
+            res = SafePlaceDecider.get_safe_place([item['answer'] for item in self.questionary_results])
+            print(res)
+            print(SafePlaceDecider.all_places[tuple(res.items())])
+
             self.startup_show()
         else:
             self.questionary_current_id += 1
