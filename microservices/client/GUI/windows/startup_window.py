@@ -1,7 +1,7 @@
 import sys
 
-from PySide6.QtCore import QUrl
-from PySide6.QtMultimedia import QMediaPlayer
+from PySide6.QtCore import QUrl, QFileInfo
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtWidgets import QApplication, QRadioButton, QButtonGroup, QMessageBox
 from PySide6.QtWidgets import QMainWindow, QWidget
@@ -51,9 +51,11 @@ class MainWindow(QMainWindow):
     def open_stress_video(self):
         if not self.stress_video_window or not self.stress_video_window.isVisible():
             self.player = QMediaPlayer()
-            # self.player.setSource(QUrl('video/Stress video.mp4'))
-            self.player.setSource(QUrl(r'C:\Фото\Маме видео\Кабы не было зимы... Песня из Простоквашино С новым годом!!!.mp4'))
+            # self.player.setSource(QUrl.fromLocalFile(QFileInfo('microservices/client/video/Stress video.mp4').absoluteFilePath()))
+            self.player.setSource(QUrl.fromLocalFile(QFileInfo('../video/Stress video.mp4').absoluteFilePath()))
             self.stress_video_window = QVideoWidget()
+            self.audio_output = QAudioOutput()
+            self.player.setAudioOutput(self.audio_output)
             self.player.setVideoOutput(self.stress_video_window)
             self.stress_video_window.show()
             self.player.play()
