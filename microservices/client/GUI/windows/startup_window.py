@@ -35,6 +35,7 @@ class MainWindow(QMainWindow):
         self.questionary_results = None
         self.questionary_current_id = -1
         self.quest_button_group = None
+        self.safe_places = None
 
         self.ui.start_btn.clicked.connect(self.start_relax)
         self.ui.stress_video_btn.clicked.connect(self.open_stress_video)
@@ -47,7 +48,8 @@ class MainWindow(QMainWindow):
 
     def start_relax(self):
         if not self.relax_window or not self.relax_window.isVisible():
-            self.relax_window = RelaxWindow([stress_video_id] * 6)
+            # self.relax_window = RelaxWindow([stress_video_id] * 6)
+            self.relax_window = RelaxWindow(self.safe_places)
             self.relax_window.show()
 
     def open_stress_video(self):
@@ -80,7 +82,8 @@ class MainWindow(QMainWindow):
             self.survey_end_show()
             res = SafePlaceDecider.get_safe_place([item['answer'] for item in self.questionary_results])
             print(res)
-            print(SafePlaceDecider.all_places[tuple(res.items())])
+            self.safe_places = SafePlaceDecider.all_places[tuple(res.items())]
+            print(self.safe_places)
 
             self.startup_show()
         else:
@@ -149,14 +152,16 @@ class MainWindow(QMainWindow):
     # def about_us_show(self):
     #     self.ui.view_widget.setCurrentIndex(3)
 
-    @staticmethod
-    def _clear_children(parent):
+    @classmethod
+    def _clear_children(cls, parent):
         while parent.count():
             child = parent.takeAt(0)
             child_widget = child.widget()
             if child_widget:
                 child_widget.setParent(None)
                 child_widget.deleteLater()
+            elif child:
+                cls._clear_children(child)
 
     # def _draw_raw_data(self):
     #     self._clear_children(self.ui.raw_data_layout)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>StartupWindow</class>
- <widget class="QMainWindow" name="StartupWindow">
+ <class>RelaxWindow</class>
+ <widget class="QMainWindow" name="RelaxWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MyRelax - Relax</string>
+   <string>RelaxMe - Relax</string>
   </property>
   <property name="styleSheet">
    <string notr="true">#MainWindow *{
@@ -50,6 +50,9 @@ QPushButton{
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="spacing">
+           <number>20</number>
+          </property>
           <item alignment="Qt::AlignmentFlag::AlignHCenter">
            <widget class="QLabel" name="label">
             <property name="minimumSize">
@@ -77,9 +80,27 @@ QPushButton{
        </layout>
       </widget>
       <widget class="QWidget" name="player_page">
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="10,0">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
-         <layout class="QVBoxLayout" name="player_layout">
+         <layout class="QHBoxLayout" name="player_video_layout"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="player_panel">
           <item alignment="Qt::AlignmentFlag::AlignRight">
            <widget class="QPushButton" name="back_button">
             <property name="text">

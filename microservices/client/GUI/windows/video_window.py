@@ -61,11 +61,12 @@ class TestWidget(QPushButton):
 
         self.setLayout(layout)
 
+
 def get_video_widget(video_id, autoplay=False, start=0, mute=False):
     if autoplay:
-        autoplay_param = 0
-    else:
         autoplay_param = 1
+    else:
+        autoplay_param = 0
 
     if mute:
         mute_param = 1
@@ -73,10 +74,12 @@ def get_video_widget(video_id, autoplay=False, start=0, mute=False):
         mute_param = 0
 
     video_url = (f"https://www.youtube.com/embed/{video_id}?autoplay={autoplay_param}&controls=1&"
-                 f"modestbranding=1&showinfo=0&fs=0&rel=0&color=white&start={start}&mute={mute_param}")
+                 f"modestbranding=1&showinfo=0&fs=1&rel=0&color=white&start={start}&mute={mute_param}")
 
     web_view = QWebEngineView()
     web_view.setUrl(video_url)
     web_view.page().settings().setAttribute(QWebEngineSettings.WebAttribute.PlaybackRequiresUserGesture, False)
+    web_view.settings().setAttribute(QWebEngineSettings.WebAttribute.FullScreenSupportEnabled, True)
+    web_view.page().fullScreenRequested.connect(lambda request: request.accept())
 
     return web_view

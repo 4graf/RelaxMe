@@ -6,9 +6,9 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'bird_1')
         ): (
-            'https://www.youtube.com/watch?v=6g3QiE4IB-4',
-            'https://www.youtube.com/watch?v=_QB9BVkXnFE',
-            'https://www.youtube.com/watch?v=ipf7ifVSeDU'
+            '6g3QiE4IB-4',
+            '_QB9BVkXnFE',
+            'ipf7ifVSeDU'
         ),
 
         (
@@ -17,7 +17,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=oSmUI3m2kLk'
+            'oSmUI3m2kLk'
         ),
 
         (
@@ -26,7 +26,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=jEnd8JIMii4'
+            'jEnd8JIMii4'
         ),
 
         (
@@ -35,9 +35,9 @@ class SafePlaceDecider:
             ('people', 'yes'),
             ('animals', 'dog_3')
         ): (
-            'https://www.youtube.com/watch?v=NfbKa8CQpuE',
-            'https://www.youtube.com/watch?v=XmG0rfaIK5s',
-            'https://www.youtube.com/watch?v=-ZqsNggRBLY'
+            'NfbKa8CQpuE',
+            'XmG0rfaIK5s',
+            '-ZqsNggRBLY'
         ),
 
         (
@@ -46,9 +46,9 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'dog_3')
         ): (
-            'https://www.youtube.com/watch?v=7CGXsLkbdv4',
-            'https://www.youtube.com/watch?v=GTIPiD1g624',
-            'https://www.youtube.com/watch?v=irjUXgvMBR4'
+            '7CGXsLkbdv4',
+            'GTIPiD1g624',
+            'irjUXgvMBR4'
         ),
 
         (
@@ -57,7 +57,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'dog_2')
         ): (
-            'https://www.youtube.com/watch?v=m6L4nG0kaSE',
+            'm6L4nG0kaSE',
         ),
 
         (
@@ -66,7 +66,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'dog_3')
         ): (
-            'https://www.youtube.com/watch?v=JpBJcOq_0e8',
+            'JpBJcOq_0e8',
 
         ),
 
@@ -76,7 +76,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=Pms5ZBzZBAM',
+            'Pms5ZBzZBAM',
 
         ),
 
@@ -86,7 +86,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=DKaZTjgYldE',
+            'DKaZTjgYldE',
 
         ),
 
@@ -96,8 +96,8 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=0L38Z9hIi5s',
-            'https://www.youtube.com/watch?v=LFOx-vmYrts'
+            '0L38Z9hIi5s',
+            'LFOx-vmYrts'
         ),
 
         (
@@ -106,7 +106,7 @@ class SafePlaceDecider:
             ('people', 'yes'),
             ('animals', 'dog_3')
         ): (
-            'https://www.youtube.com/watch?v=fa3Slv2i0Uw'
+            'fa3Slv2i0Uw'
         ),
 
         (
@@ -115,8 +115,8 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=c9pQYOGIWM8',
-            'https://www.youtube.com/watch?v=ynLpZGegiJE'
+            'c9pQYOGIWM8',
+            'ynLpZGegiJE'
         ),
 
         (
@@ -125,7 +125,7 @@ class SafePlaceDecider:
             ('people', 'yes'),
             ('animals', 'dog_2')
         ): (
-            'https://www.youtube.com/watch?v=ObOAXStZPjs',
+            'ObOAXStZPjs',
         ),
 
         (
@@ -134,7 +134,7 @@ class SafePlaceDecider:
             ('people', 'yes'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=5mn437fw27c',
+            '5mn437fw27c',
         ),
 
         (
@@ -143,7 +143,7 @@ class SafePlaceDecider:
             ('people', 'yes'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=YLeJ9QRaM7I',
+            'YLeJ9QRaM7I',
         ),
 
         (
@@ -152,7 +152,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'cat_3')
         ): (
-            'https://www.youtube.com/watch?v=Z_JU4NE90gI',
+            'Z_JU4NE90gI',
         ),
 
         (
@@ -161,7 +161,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'bird_2')
         ): (
-            'https://www.youtube.com/watch?v=Ge4fag9A9kA',
+            'Ge4fag9A9kA',
         ),
 
         (
@@ -170,7 +170,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'fantasy_animal_2')
         ): (
-            'https://www.youtube.com/watch?v=SE7dzWYWz1w',
+            'SE7dzWYWz1w',
         ),
 
         (
@@ -179,7 +179,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'fantasy_animal_2')
         ): (
-            'https://www.youtube.com/watch?v=ajPlBlh8sDU',
+            'ajPlBlh8sDU',
         ),
 
         (
@@ -188,7 +188,7 @@ class SafePlaceDecider:
             ('people', 'yes'),
             ('animals', 'fantasy_animal_2')
         ): (
-            'https://www.youtube.com/watch?v=keyhWKkVIHw',
+            'keyhWKkVIHw',
         ),
 
         (
@@ -197,7 +197,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=hmzPJmVX9D4',
+            'hmzPJmVX9D4',
         ),
 
         (
@@ -206,7 +206,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'no')
         ): (
-            'https://www.youtube.com/watch?v=Ii9fO5Y7SVo',
+            'Ii9fO5Y7SVo',
         ),
 
         (
@@ -215,7 +215,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'cat_3')
         ): (
-            'https://www.youtube.com/watch?v=xSeVzZsdQlg',
+            'xSeVzZsdQlg',
         ),
 
         (
@@ -224,7 +224,7 @@ class SafePlaceDecider:
             ('people', 'no'),
             ('animals', 'cat_3')
         ): (
-            'https://www.youtube.com/watch?v=VHQLPyGOwWc',
+            'VHQLPyGOwWc',
         ),
     }
 
