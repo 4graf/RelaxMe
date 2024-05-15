@@ -6,6 +6,7 @@ from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtWidgets import QApplication, QRadioButton, QButtonGroup, QMessageBox
 from PySide6.QtWidgets import QMainWindow, QWidget
 
+from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
 from microservices.client.GUI.settings import stress_video_id
 from microservices.client.GUI.utils import QUESTIONARY
 from microservices.client.GUI.windows.relax_window import RelaxWindow
@@ -25,6 +26,8 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_StartupWindow()
         self.ui.setupUi(self)
+
+        self.eeg_device_service = EEGDeviceService()
 
         self.stress_video_window = None
         self.relax_window = None
@@ -49,7 +52,8 @@ class MainWindow(QMainWindow):
     def start_relax(self):
         if not self.relax_window or not self.relax_window.isVisible():
             # self.relax_window = RelaxWindow([stress_video_id] * 6)
-            self.relax_window = RelaxWindow(self.safe_places)
+            self.relax_window = RelaxWindow([stress_video_id] * 6, self.eeg_device_service)
+            # self.relax_window = RelaxWindow(self.safe_places, self.eeg_device_service)
             self.relax_window.show()
 
     def open_stress_video(self):

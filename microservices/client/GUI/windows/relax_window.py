@@ -2,9 +2,14 @@
 # import matplotlib.pyplot as plt
 # import mne
 # import numpy as np
-from PySide6 import QtCore
-from PySide6.QtWidgets import QMainWindow, QWidget, QTableView, QTableWidget, QVBoxLayout, QPushButton
+import asyncio
 
+from PySide6 import QtCore
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QMainWindow, QWidget, QTableView, QTableWidget, QVBoxLayout, QPushButton
+from httpx import AsyncClient
+
+from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
 from microservices.client.GUI.windows.ui_relax_window import Ui_RelaxWindow
 from microservices.client.GUI.windows.video_window import get_video_widget
 
@@ -30,10 +35,12 @@ class PlotWidget(QWidget):
 
 
 class RelaxWindow(QMainWindow):
-    def __init__(self, video_urls):
+    def __init__(self, video_urls, eeg_device_service: EEGDeviceService = None):
         super(RelaxWindow, self).__init__()
         self.ui = Ui_RelaxWindow()
         self.ui.setupUi(self)
+
+        self.eeg_device_service = eeg_device_service
 
         self._size_grid = (3, 3)
         self.video_btns = {}
@@ -42,16 +49,11 @@ class RelaxWindow(QMainWindow):
         self.all_video_show()
 
         self.ui.back_button.clicked.connect(self.back_to_menu)
-        # self.ui.chart_btn.clicked.connect(self.chart_show)
-        # self.ui.classification_btn.clicked.connect(self.classification_show)
-        # self.ui.about_us_btn.clicked.connect(self.about_us_show)
-        # self.ui.open_file_action.triggered.connect(self.open_file)
-        # self.ui.light_theme_action.triggered.connect(self.make_light_theme)
-        # self.ui.dark_theme_action.triggered.connect(self.make_dark_theme)
 
-        # self.record_idx = self.eeg_preproc.filenames.index('data/Артемий правая нога.txt')
-
-        # self._draw_about_us()
+        if self.eeg_device_service:
+            self.timer = QTimer()
+            self.timer.setInterval(5000)
+            self.timer.timeout.connect(lambda: asyncio.ensure_future(self.predict_stress()))
 
         self.showMaximized()
 
@@ -82,18 +84,29 @@ class RelaxWindow(QMainWindow):
         self.ui.player_video_layout.addWidget(video)
         self.ui.content_widget.setCurrentIndex(1)
 
+        self.eeg_device_service.start()
+        self.timer.start()
+
     def back_to_menu(self):
         self._clear_children(self.ui.player_video_layout)
         self.all_video_show()
 
-    def chart_show(self):
-        self.ui.view_widget.setCurrentIndex(1)
+        self.timer.stop()
+        self.eeg_device_service.stop()
 
-    def classification_show(self):
-        self.ui.view_widget.setCurrentIndex(2)
+    async def predict_stress(self):
+        data = self.eeg_device_service.get_data(only_eeg=True)
+        payload = {
+            'user_id': '608f1294-5c1d-49f1-85ee-f1fd2909fffb',
+            'data': data.tolist()
+        }
 
-    def about_us_show(self):
-        self.ui.view_widget.setCurrentIndex(3)
+        print(payload)
+
+        async with AsyncClient() as client:
+            response = await client.post('http://localhost:3000/api/v1/stress/predict', json=payload)
+            prediction = response.json()
+            print(prediction)
 
     @classmethod
     def _clear_children(cls, parent):

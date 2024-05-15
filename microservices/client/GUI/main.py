@@ -324,6 +324,7 @@
 #
 import sys
 
+from PySide6 import QtAsyncio
 from PySide6.QtWidgets import QApplication
 
 from microservices.client.GUI.windows.startup_window import MainWindow
@@ -333,5 +334,7 @@ if __name__ == "__main__":
 
     window = MainWindow()
     window.show()
+
+    QtAsyncio.run()
 
     sys.exit(app.exec())
