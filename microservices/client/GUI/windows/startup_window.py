@@ -11,7 +11,7 @@ from microservices.client.GUI.utils import QUESTIONARY
 from microservices.client.GUI.windows.relax_window import RelaxWindow
 from microservices.client.GUI.windows.themes import ThemeGUI
 from microservices.client.GUI.windows.ui_startup_window import Ui_StartupWindow
-from microservices.client.GUI.windows.video_window import VideoWindow
+from microservices.client.GUI.windows.video_window import VideoWindow, get_video_widget, TestWidget
 from microservices.client.safe_place.safe_place import SafePlaceDecider
 
 
@@ -43,9 +43,11 @@ class MainWindow(QMainWindow):
 
         self.showMaximized()
 
+        # self.ui.gridLayout.addWidget(TestWidget(stress_video_id))
+
     def start_relax(self):
         if not self.relax_window or not self.relax_window.isVisible():
-            self.relax_window = RelaxWindow()
+            self.relax_window = RelaxWindow([stress_video_id] * 6)
             self.relax_window.show()
 
     def open_stress_video(self):
