@@ -34,7 +34,7 @@ async def predict_stress(eeg_predict: EEGPredictRequest,
     """
     eeg_data = EEGData(data=eeg_predict.data)
     eeg_add = EEGAdd(user_id=eeg_predict.user_id,
-                     state=1,
+                     state=0,
                      data=eeg_predict.data)
 
     prediction, _ = await asyncio.gather(stress_service.predict_stress(eeg_data=eeg_data),

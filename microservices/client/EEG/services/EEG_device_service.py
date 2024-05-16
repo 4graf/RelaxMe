@@ -30,7 +30,11 @@ class EEGDeviceService:
     def stop(self):
         if self.board.is_prepared():
             self.board.stop_stream()
+
+    def exit(self):
+        if self.board.is_prepared():
+            self.board.stop_stream()
             self.board.release_session()
 
     def __del__(self):
-        self.stop()
+        self.exit()

@@ -1,10 +1,12 @@
+import json
 import sys
 
-from PySide6.QtCore import QUrl, QFileInfo
+from PySide6.QtCore import QUrl, QFileInfo, QTimer, QByteArray
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
+from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PySide6.QtWidgets import QApplication, QRadioButton, QButtonGroup, QMessageBox
-from PySide6.QtWidgets import QMainWindow, QWidget
+from PySide6.QtWidgets import QMainWindow
 
 from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
 from microservices.client.GUI.settings import stress_video_id
@@ -12,13 +14,10 @@ from microservices.client.GUI.utils import QUESTIONARY
 from microservices.client.GUI.windows.relax_window import RelaxWindow
 from microservices.client.GUI.windows.themes import ThemeGUI
 from microservices.client.GUI.windows.ui_startup_window import Ui_StartupWindow
-from microservices.client.GUI.windows.video_window import VideoWindow, get_video_widget, TestWidget
 from microservices.client.safe_place.safe_place import SafePlaceDecider
+from microservices.client.settings import EndpointSettings
 
-
-class PlotWidget(QWidget):
-    def __init__(self, parent=None):
-        super(PlotWidget, self).__init__(parent)
+settings = EndpointSettings()
 
 
 class MainWindow(QMainWindow):
@@ -45,9 +44,33 @@ class MainWindow(QMainWindow):
         self.ui.testing_btn.clicked.connect(self.survey_show)
         self.ui.pushButton.clicked.connect(self.survey_next)
 
+        if self.eeg_device_service:
+            self.manager = QNetworkAccessManager()
+            self.manager.finished.connect(self.api_reply)
+
+            self.timer = QTimer()
+            self.timer.setInterval(settings.eeg_interval)
+            self.timer.timeout.connect(self.api_send)
+
         self.showMaximized()
 
-        # self.ui.gridLayout.addWidget(TestWidget(stress_video_id))
+    def api_send(self):
+        request = QNetworkRequest(QUrl(f"{settings.eeg_service_endpoint}/add"))
+        request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, "application/json")
+
+        data = self.eeg_device_service.get_data(only_eeg=True)
+        payload = {
+            'user_id': '608f1294-5c1d-49f1-85ee-f1fd2909fffb',
+            'state': 0,
+            'data': data.tolist()
+        }
+        body = QByteArray()
+        body.append(json.dumps(payload).encode("utf-8"))
+
+        self.manager.post(request, body)
+
+    def api_reply(self, reply: QNetworkReply):
+        print(reply.readAll().data().decode('utf8'))
 
     def start_relax(self):
         if not self.relax_window or not self.relax_window.isVisible():
@@ -66,7 +89,19 @@ class MainWindow(QMainWindow):
             self.player.setAudioOutput(self.audio_output)
             self.player.setVideoOutput(self.stress_video_window)
             self.stress_video_window.show()
+
+            self.timer.start()
+            self.eeg_device_service.start()
             self.player.play()
+
+            self.player.mediaStatusChanged.connect(self.player_status_changed)
+
+    def player_status_changed(self, status):
+        if status == QMediaPlayer.MediaStatus.EndOfMedia:
+            self.timer.stop()
+            self.eeg_device_service.stop()
+            self.stress_video_window.close()
+
         # if not self.stress_video_window or not self.stress_video_window.isVisible():
         #     self.stress_video_window = VideoWindow(stress_video_id)
         #     self.stress_video_window.show()

@@ -2,17 +2,16 @@
 # import matplotlib.pyplot as plt
 # import mne
 # import numpy as np
-import asyncio
+import json
 
-from PySide6 import QtCore
-from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import QMainWindow, QWidget, QTableView, QTableWidget, QVBoxLayout, QPushButton
-from httpx import AsyncClient
+from PySide6.QtCore import QTimer, QUrl, QByteArray
+from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QPushButton
 
 from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
 from microservices.client.GUI.windows.ui_relax_window import Ui_RelaxWindow
 from microservices.client.GUI.windows.video_window import get_video_widget
-
+from microservices.client.settings import EndpointSettings
 
 # from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg as FigureCanvas,
 #                                                NavigationToolbar2QT as NavigationToolbar)
@@ -24,14 +23,7 @@ from microservices.client.GUI.windows.video_window import get_video_widget
 # matplotlib.use('Qt5Agg')
 # mne.viz.set_browser_backend('qt')
 
-
-class PlotWidget(QWidget):
-    def __init__(self, figure, parent=None):
-        super(PlotWidget, self).__init__(parent)
-        # self.canvas = FigureCanvas(figure)
-        # self.canvas.draw()
-        # self.canvas.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus | QtCore.Qt.FocusPolicy.WheelFocus)
-        # self.canvas.setFocus()
+settings = EndpointSettings()
 
 
 class RelaxWindow(QMainWindow):
@@ -51,11 +43,33 @@ class RelaxWindow(QMainWindow):
         self.ui.back_button.clicked.connect(self.back_to_menu)
 
         if self.eeg_device_service:
+            self.manager = QNetworkAccessManager()
+            self.manager.finished.connect(self.api_reply)
+
             self.timer = QTimer()
-            self.timer.setInterval(5000)
-            self.timer.timeout.connect(lambda: asyncio.ensure_future(self.predict_stress()))
+            self.timer.setInterval(settings.eeg_interval)
+            self.timer.timeout.connect(self.api_predict)
+
+            # self.timer.timeout.connect(lambda: asyncio.ensure_future(self.predict_stress()))
 
         self.showMaximized()
+
+    def api_predict(self):
+        request = QNetworkRequest(QUrl(f"{settings.stress_service_endpoint}/predict"))
+        request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, "application/json")
+
+        data = self.eeg_device_service.get_data(only_eeg=True)
+        payload = {
+            'user_id': '608f1294-5c1d-49f1-85ee-f1fd2909fffb',
+            'data': data.tolist()
+        }
+        body = QByteArray()
+        body.append(json.dumps(payload).encode("utf-8"))
+
+        self.manager.post(request, body)
+
+    def api_reply(self, reply: QNetworkReply):
+        print(reply.readAll().data().decode('utf8'))
 
     def all_video_show(self) -> None:
         self.ui.content_widget.setCurrentIndex(0)
@@ -93,20 +107,6 @@ class RelaxWindow(QMainWindow):
 
         self.timer.stop()
         self.eeg_device_service.stop()
-
-    async def predict_stress(self):
-        data = self.eeg_device_service.get_data(only_eeg=True)
-        payload = {
-            'user_id': '608f1294-5c1d-49f1-85ee-f1fd2909fffb',
-            'data': data.tolist()
-        }
-
-        print(payload)
-
-        async with AsyncClient() as client:
-            response = await client.post('http://localhost:3000/api/v1/stress/predict', json=payload)
-            prediction = response.json()
-            print(prediction)
 
     @classmethod
     def _clear_children(cls, parent):
