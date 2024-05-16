@@ -2,6 +2,7 @@ import json
 import sys
 
 from PySide6.QtCore import QUrl, QFileInfo, QTimer, QByteArray
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
@@ -61,7 +62,7 @@ class MainWindow(QMainWindow):
         data = self.eeg_device_service.get_data(only_eeg=True)
         payload = {
             'user_id': '608f1294-5c1d-49f1-85ee-f1fd2909fffb',
-            'state': 0,
+            'state': 1,
             'data': data.tolist()
         }
         body = QByteArray()
@@ -190,6 +191,12 @@ class MainWindow(QMainWindow):
     #
     # def about_us_show(self):
     #     self.ui.view_widget.setCurrentIndex(3)
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self.eeg_device_service:
+            self.eeg_device_service.exit()
+        for window in QApplication.topLevelWidgets():
+            window.close()
 
     @classmethod
     def _clear_children(cls, parent):
@@ -321,7 +328,7 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    window = MainWindow()
-    window.show()
+    main_window = MainWindow()
+    main_window.show()
 
     sys.exit(app.exec())

@@ -5,6 +5,7 @@
 import json
 
 from PySide6.QtCore import QTimer, QUrl, QByteArray
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QPushButton
 
@@ -50,7 +51,7 @@ class RelaxWindow(QMainWindow):
             self.timer.setInterval(settings.eeg_interval)
             self.timer.timeout.connect(self.api_predict)
 
-            # self.timer.timeout.connect(lambda: asyncio.ensure_future(self.predict_stress()))
+            self.all_predictions = []
 
         self.showMaximized()
 
@@ -69,7 +70,16 @@ class RelaxWindow(QMainWindow):
         self.manager.post(request, body)
 
     def api_reply(self, reply: QNetworkReply):
-        print(reply.readAll().data().decode('utf8'))
+        predictions = json.loads(reply.readAll().data().decode('utf8'))['labels']
+        l_border = max(len(self.all_predictions) - 19, 0)
+        self.all_predictions.extend(predictions)
+        r_border = len(self.all_predictions) - 19
+        for i in range(l_border, r_border):
+            stress_count = sum(self.all_predictions[i:i+20])
+            if stress_count <= 5:
+                print(f'Релакс начался с {i} секунды!')
+            else:
+                print('Нет релакса :(')
 
     def all_video_show(self) -> None:
         self.ui.content_widget.setCurrentIndex(0)
@@ -107,6 +117,11 @@ class RelaxWindow(QMainWindow):
 
         self.timer.stop()
         self.eeg_device_service.stop()
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self.eeg_device_service:
+            self.eeg_device_service.exit()
+        self._clear_children(self.ui.video_grid_layout)
 
     @classmethod
     def _clear_children(cls, parent):

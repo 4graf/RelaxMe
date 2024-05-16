@@ -16,7 +16,7 @@ from microservices.backend.schemas.user import UserLogin, User
 router = APIRouter()
 
 
-@router.post("/add", status_code=status.HTTP_200_OK)
+@router.post("/login", status_code=status.HTTP_200_OK)
 async def login_user(user: UserLogin,
                      user_service: Annotated[AbstractUserService, Depends(get_user_service)]) \
         -> User:
