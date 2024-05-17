@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
         self.questionary_results = None
         self.questionary_current_id = -1
         self.quest_button_group = None
-        self.safe_places = None
+        self.safe_places = []
 
         self.ui.start_btn.clicked.connect(self.start_relax)
         self.ui.stress_video_btn.clicked.connect(self.open_stress_video)
@@ -76,8 +76,8 @@ class MainWindow(QMainWindow):
     def start_relax(self):
         if not self.relax_window or not self.relax_window.isVisible():
             # self.relax_window = RelaxWindow([stress_video_id] * 6)
-            self.relax_window = RelaxWindow([stress_video_id] * 6, self.eeg_device_service)
-            # self.relax_window = RelaxWindow(self.safe_places, self.eeg_device_service)
+            # self.relax_window = RelaxWindow([stress_video_id] * 6, self.eeg_device_service)
+            self.relax_window = RelaxWindow(self.safe_places, self.eeg_device_service)
             self.relax_window.show()
 
     def open_stress_video(self):

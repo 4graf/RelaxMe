@@ -71,6 +71,7 @@ class RelaxWindow(QMainWindow):
 
     def api_reply(self, reply: QNetworkReply):
         predictions = json.loads(reply.readAll().data().decode('utf8'))['labels']
+        print(predictions)
         l_border = max(len(self.all_predictions) - 19, 0)
         self.all_predictions.extend(predictions)
         r_border = len(self.all_predictions) - 19
@@ -100,12 +101,29 @@ class RelaxWindow(QMainWindow):
                                                 i // self._size_grid[0],
                                                 i % self._size_grid[1])
 
+        layout = QVBoxLayout(self)
+        btn = QPushButton(text='Без видео')
+        btn.clicked.connect(self.open_nothing)
+        layout.addWidget(btn)
+
+        self.ui.video_grid_layout.addLayout(layout,
+                                            len(self.video_urls) // self._size_grid[0],
+                                            len(self.video_urls) % self._size_grid[1])
+
     def open_video(self):
         btn = self.sender()
         self._clear_children(self.ui.video_grid_layout)
 
         video = get_video_widget(self.video_btns[id(btn)], autoplay=True, mute=True)
         self.ui.player_video_layout.addWidget(video)
+        self.ui.content_widget.setCurrentIndex(1)
+
+        self.eeg_device_service.start()
+        self.timer.start()
+
+    def open_nothing(self):
+        self._clear_children(self.ui.video_grid_layout)
+
         self.ui.content_widget.setCurrentIndex(1)
 
         self.eeg_device_service.start()
