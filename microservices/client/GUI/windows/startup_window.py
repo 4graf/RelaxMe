@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_StartupWindow()
         self.ui.setupUi(self)
 
+        # self.eeg_device_service = None
         self.eeg_device_service = EEGDeviceService()
 
         self.stress_video_window = None
@@ -75,7 +76,7 @@ class MainWindow(QMainWindow):
 
     def start_relax(self):
         if not self.relax_window or not self.relax_window.isVisible():
-            # self.relax_window = RelaxWindow([stress_video_id] * 6)
+            # self.relax_window = RelaxWindow(['EZ9DrY43wtw'], self.eeg_device_service)
             # self.relax_window = RelaxWindow([stress_video_id] * 6, self.eeg_device_service)
             self.relax_window = RelaxWindow(self.safe_places, self.eeg_device_service)
             self.relax_window.show()

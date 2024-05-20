@@ -101,14 +101,14 @@ class RelaxWindow(QMainWindow):
                                                 i // self._size_grid[0],
                                                 i % self._size_grid[1])
 
-        layout = QVBoxLayout(self)
-        btn = QPushButton(text='Без видео')
-        btn.clicked.connect(self.open_nothing)
-        layout.addWidget(btn)
+        # layout = QVBoxLayout(self)
+        # btn = QPushButton(text='Без видео')
+        # btn.clicked.connect(self.open_nothing)
+        # layout.addWidget(btn)
 
-        self.ui.video_grid_layout.addLayout(layout,
-                                            len(self.video_urls) // self._size_grid[0],
-                                            len(self.video_urls) % self._size_grid[1])
+        # self.ui.video_grid_layout.addLayout(layout,
+        #                                     len(self.video_urls) // self._size_grid[0],
+        #                                     len(self.video_urls) % self._size_grid[1])
 
     def open_video(self):
         btn = self.sender()

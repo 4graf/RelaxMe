@@ -226,6 +226,15 @@ class SafePlaceDecider:
         ): (
             'VHQLPyGOwWc',
         ),
+
+        (
+            ('environment', 'house'),
+            ('weather', 'sun'),
+            ('people', 'no'),
+            ('animals', 'dog_3')
+        ): (
+            'EZ9DrY43wtw',
+        ),
     }
 
     @classmethod
