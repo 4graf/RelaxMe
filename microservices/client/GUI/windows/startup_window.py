@@ -76,9 +76,10 @@ class MainWindow(QMainWindow):
 
     def start_relax(self):
         if not self.relax_window or not self.relax_window.isVisible():
-            # self.relax_window = RelaxWindow(['EZ9DrY43wtw'], self.eeg_device_service)
+            self.relax_window = RelaxWindow(['oSmUI3m2kLk'], self.eeg_device_service)
+            # self.relax_window = RelaxWindow(['7CGXsLkbdv4', 'GTIPiD1g624', 'irjUXgvMBR4'], self.eeg_device_service)
             # self.relax_window = RelaxWindow([stress_video_id] * 6, self.eeg_device_service)
-            self.relax_window = RelaxWindow(self.safe_places, self.eeg_device_service)
+            # self.relax_window = RelaxWindow(self.safe_places, self.eeg_device_service)
             self.relax_window.show()
 
     def open_stress_video(self):
