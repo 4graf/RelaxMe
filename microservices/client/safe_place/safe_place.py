@@ -47,8 +47,9 @@ class SafePlaceDecider:
             ('animals', 'dog_3')
         ): (
             '7CGXsLkbdv4',
+            'V17tBhe5gn8',
             'GTIPiD1g624',
-            'irjUXgvMBR4'
+            'irjUXgvMBR4',
         ),
 
         (

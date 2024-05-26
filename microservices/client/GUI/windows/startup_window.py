@@ -1,13 +1,14 @@
 import json
 import sys
 
-from PySide6.QtCore import QUrl, QFileInfo, QTimer, QByteArray
-from PySide6.QtGui import QCloseEvent
+from PySide6.QtCore import QUrl, QFileInfo, QTimer, QByteArray, QPoint
+from PySide6.QtGui import QCloseEvent, QColor
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
-from PySide6.QtWidgets import QApplication, QRadioButton, QButtonGroup, QMessageBox
+from PySide6.QtWidgets import QApplication, QRadioButton, QButtonGroup, QMessageBox, QGraphicsDropShadowEffect
 from PySide6.QtWidgets import QMainWindow
+from brainflow import BrainFlowError
 
 from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
 from microservices.client.GUI.settings import stress_video_id
@@ -27,8 +28,17 @@ class MainWindow(QMainWindow):
         self.ui = Ui_StartupWindow()
         self.ui.setupUi(self)
 
-        # self.eeg_device_service = None
-        self.eeg_device_service = EEGDeviceService()
+        effect = QGraphicsDropShadowEffect(self)
+        effect.setOffset(QPoint(0, 6))
+        effect.setBlurRadius(50)
+        effect.setColor(QColor("#C0AEE2"))
+        self.ui.header_frame.setGraphicsEffect(effect)
+
+        self.eeg_device_service = None
+        # try:
+        #     self.eeg_device_service = EEGDeviceService()
+        # except BrainFlowError:
+        #     self.eeg_device_service = None
 
         self.stress_video_window = None
         self.relax_window = None
@@ -45,6 +55,9 @@ class MainWindow(QMainWindow):
         self.ui.stress_video_btn.clicked.connect(self.open_stress_video)
         self.ui.testing_btn.clicked.connect(self.survey_show)
         self.ui.pushButton.clicked.connect(self.survey_next)
+        self.ui.instruction_back_btn.clicked.connect(self.startup_show)
+        self.ui.pushButton_2.clicked.connect(self.startup_show)
+        self.ui.instruction_btn.clicked.connect(self.instruction_show)
 
         if self.eeg_device_service:
             self.manager = QNetworkAccessManager()
@@ -54,7 +67,8 @@ class MainWindow(QMainWindow):
             self.timer.setInterval(settings.eeg_interval)
             self.timer.timeout.connect(self.api_send)
 
-        self.showMaximized()
+        self.auth_show()
+        # self.showMaximized()
 
     def api_send(self):
         request = QNetworkRequest(QUrl(f"{settings.eeg_service_endpoint}/add"))
@@ -76,8 +90,8 @@ class MainWindow(QMainWindow):
 
     def start_relax(self):
         if not self.relax_window or not self.relax_window.isVisible():
-            self.relax_window = RelaxWindow(['oSmUI3m2kLk'], self.eeg_device_service)
-            # self.relax_window = RelaxWindow(['7CGXsLkbdv4', 'GTIPiD1g624', 'irjUXgvMBR4'], self.eeg_device_service)
+            # self.relax_window = RelaxWindow(['oSmUI3m2kLk'], self.eeg_device_service)
+            self.relax_window = RelaxWindow(['7CGXsLkbdv4', 'V17tBhe5gn8', 'GTIPiD1g624', 'irjUXgvMBR4'], self.eeg_device_service)
             # self.relax_window = RelaxWindow([stress_video_id] * 6, self.eeg_device_service)
             # self.relax_window = RelaxWindow(self.safe_places, self.eeg_device_service)
             self.relax_window.show()
@@ -91,18 +105,23 @@ class MainWindow(QMainWindow):
             self.audio_output = QAudioOutput()
             self.player.setAudioOutput(self.audio_output)
             self.player.setVideoOutput(self.stress_video_window)
+            self.stress_video_window.setWindowTitle('RelaxMe - Стресс-видео')
             self.stress_video_window.show()
 
-            self.timer.start()
-            self.eeg_device_service.start()
+            if self.eeg_device_service:
+                self.timer.start()
+                self.eeg_device_service.start()
+
             self.player.play()
 
             self.player.mediaStatusChanged.connect(self.player_status_changed)
 
     def player_status_changed(self, status):
         if status == QMediaPlayer.MediaStatus.EndOfMedia:
-            self.timer.stop()
-            self.eeg_device_service.stop()
+            if self.eeg_device_service:
+                self.timer.stop()
+                self.eeg_device_service.stop()
+
             self.stress_video_window.close()
 
         # if not self.stress_video_window or not self.stress_video_window.isVisible():
@@ -156,8 +175,11 @@ class MainWindow(QMainWindow):
         else:
             self.ui.dark_theme_action.setChecked(True)
 
-    def startup_show(self) -> None:
+    def auth_show(self) -> None:
         self.ui.content_widget.setCurrentIndex(0)
+
+    def startup_show(self) -> None:
+        self.ui.content_widget.setCurrentIndex(1)
 
     def survey_show(self):
         self.questionary_results = []
@@ -165,11 +187,10 @@ class MainWindow(QMainWindow):
         self.survey_instruction_show()
 
         self.survey_next()
-        self.ui.content_widget.setCurrentIndex(1)
-
-    def result_show(self):
-        ...
         self.ui.content_widget.setCurrentIndex(2)
+
+    def instruction_show(self):
+        self.ui.content_widget.setCurrentIndex(3)
 
     def survey_end_show(self):
         msg_box = QMessageBox()

@@ -14,29 +14,49 @@
    <string>RelaxMe - Relax</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#MainWindow *{
-  background-color: #f0f3ff;
+   <string notr="true">* {
+  font-family: 'Circe Rounded';
+  color: #444444;
+  box-sizing: border-box;
 }
 
-#centralwidget QLabel{
-  color: #000000;
+QWidget {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #F0F2FF;
+}
+
+QPushButton {
+  padding: 2px 24px;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 15px;
+  border-color: #C0AEE2;
+  background: white;
+  color: black;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+QLabel {
+  margin-top: 0px;
   font-size: 24px;
   font-weight: 800;
+  margin-bottom: 0px;
+  text-align: center;
 }
 
-QPushButton{
-  padding: 12px 24px;
-  border-style: inset;
-  border-width: 3px;
-  border-radius: 20px;
-  border-color: #816e9c;
-  background: #f5f6fc;
-  color: #000000;
-  font-size: 14px;
-  font-weight: 600;
-  margin: 20px 0px;
+#header_frame {
+  margin-top: -100px;
+  border-radius: 100%;
+  background: white;
+  margin-right: -20;
+  margin-left: -20;
+  margin-bottom: 20px;
 }
-
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
