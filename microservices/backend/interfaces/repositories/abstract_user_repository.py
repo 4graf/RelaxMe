@@ -7,11 +7,15 @@ from microservices.backend.schemas.user import User
 
 class AbstractUserRepository(ABC):
     @abstractmethod
-    async def add_user(self, user: User) -> None:
+    async def add_user(self, user: User) -> User:
         ...
 
     @abstractmethod
     async def get_user(self, id_: UUID) -> User:
+        ...
+
+    @abstractmethod
+    async def get_user_by_login(self, login: str) -> User:
         ...
 
     @abstractmethod

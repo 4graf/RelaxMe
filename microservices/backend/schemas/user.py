@@ -11,7 +11,7 @@ class User(BaseSchema):
     safe_place_id: UUID | None = None
 
 
-class UserAdd(BaseSchema):
+class UserLogin(BaseSchema):
     login: str
     password: str
 

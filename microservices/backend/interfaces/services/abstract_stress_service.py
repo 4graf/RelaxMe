@@ -8,5 +8,5 @@ class AbstractStressService(ABC):
     stress_repo: AbstractStressRepository
 
     @abstractmethod
-    async def predict_stress(self, data: EEGData):
+    async def predict_stress(self, eeg_data: EEGData):
         ...

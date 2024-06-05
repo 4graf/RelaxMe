@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from microservices.backend.models.database import EEGModel
 from microservices.backend.models.database.base import BaseModel
+from microservices.backend.models.database.relax_content import RelaxContentModel
 from microservices.backend.models.database.safe_place import SafePlaceModel
 from microservices.backend.models.database.user import UserModel
 from microservices.backend.settings import DatabaseSettings

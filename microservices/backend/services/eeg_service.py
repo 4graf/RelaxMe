@@ -1,6 +1,6 @@
 from microservices.backend.interfaces.repositories.abstract_eeg_repository import AbstractEEGRepository
 from microservices.backend.interfaces.services.abstract_eeg_service import AbstractEEGService
-from microservices.backend.schemas.eeg import EEGAdd, EEG
+from microservices.backend.schemas.eeg import EEGAdd, EEG, EEGInfo
 
 
 class EEGService(AbstractEEGService):
@@ -20,3 +20,7 @@ class EEGService(AbstractEEGService):
                   state=eeg_add.state,
                   data=eeg_add.data)
         await self.eeg_repo.add_eeg(eeg)
+
+    async def get_all_eeg(self) -> list[EEGInfo]:
+        all_eeg = await self.eeg_repo.get_all_eeg()
+        return all_eeg
