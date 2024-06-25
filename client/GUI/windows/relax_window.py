@@ -9,10 +9,10 @@ from PySide6.QtGui import QCloseEvent
 from PySide6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QPushButton
 
-from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
-from microservices.client.GUI.windows.ui_relax_window import Ui_RelaxWindow
-from microservices.client.GUI.windows.video_window import get_video_widget
-from microservices.client.settings import EndpointSettings
+from client.EEG.services.EEG_device_service import EEGDeviceService
+from client.GUI.windows.ui_relax_window import Ui_RelaxWindow
+from client.GUI.windows.video_window import get_video_widget
+from client.settings import EndpointSettings
 
 # from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg as FigureCanvas,
 #                                                NavigationToolbar2QT as NavigationToolbar)

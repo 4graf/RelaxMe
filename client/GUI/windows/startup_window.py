@@ -10,13 +10,13 @@ from PySide6.QtWidgets import QApplication, QRadioButton, QButtonGroup, QMessage
 from PySide6.QtWidgets import QMainWindow
 from brainflow import BrainFlowError
 
-from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
-from microservices.client.GUI.utils import QUESTIONARY
-from microservices.client.GUI.windows.relax_window import RelaxWindow
-from microservices.client.GUI.windows.themes import ThemeGUI
-from microservices.client.GUI.windows.ui_startup_window import Ui_StartupWindow
-from microservices.client.safe_place.safe_place import SafePlaceDecider
-from microservices.client.settings import EndpointSettings
+from client.EEG.services.EEG_device_service import EEGDeviceService
+from client.GUI.utils import QUESTIONARY
+from client.GUI.windows.relax_window import RelaxWindow
+from client.GUI.windows.themes import ThemeGUI
+from client.GUI.windows.ui_startup_window import Ui_StartupWindow
+from client.safe_place.safe_place import SafePlaceDecider
+from client.settings import EndpointSettings
 
 settings = EndpointSettings()
 

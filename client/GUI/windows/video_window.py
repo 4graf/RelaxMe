@@ -1,11 +1,6 @@
-import sys
-
-from PySide6 import QtWidgets
 from PySide6.QtWebEngineCore import QWebEngineSettings
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton
 from PySide6.QtWebEngineWidgets import QWebEngineView
-
-from microservices.client.GUI.settings import stress_video_id
 
 
 class VideoWindow(QMainWindow):
