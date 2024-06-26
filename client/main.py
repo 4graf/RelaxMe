@@ -1,11 +1,10 @@
 import asyncio
-import random
 
 import matplotlib.pyplot as plt
 import numpy as np
 from httpx import AsyncClient
 
-from microservices.client.EEG.services.EEG_device_service import EEGDeviceService
+from client.EEG.services.EEG_device_service import EEGDeviceService
 
 eeg_device_service = EEGDeviceService()
 
